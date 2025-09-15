@@ -320,4 +320,75 @@ extern int handle_scheduler(int childno, int benchproc, int nbenchprocs);
 extern char *rpc_xact_1();
 extern char *client_rpc_xact_1();
 
+#if 0
+// malloc hook
+#define malloc(__len) ({ \
+	void *__ret; \
+	printf("malloc(%ld) called from %s:%s:%d\n", (size_t)__len, __FILE__, __func__, __LINE__); \
+	__ret = (malloc)(__len); \
+	if (!__ret) \
+		printf("malloc(%ld) failed\n", (size_t)__len); \
+	__ret; \
+})
+
+// calloc hook
+#define calloc(__n, __len) ({ \
+	void *__ret; \
+	printf("calloc(%ld, %ld) called from %s:%s:%d\n", (size_t)__n, (size_t)__len, __FILE__, __func__, __LINE__); \
+	__ret = (calloc)(__n, __len); \
+	if (!__ret) \
+		printf("calloc(%ld, %ld) failed\n", (size_t)__n, (size_t)__len); \
+	__ret; \
+})
+#endif
+
+#define ALLOC_PATH "/dev/hugepages/test"
+// Not reentrant
+static void *alloc_file(size_t len)
+{
+	static struct stat st;
+	static size_t offset = 0;
+	static int fd = -1;
+	size_t aligned_len;
+	void *ret = NULL;
+
+	if (fd == -1) {
+		fd = open(ALLOC_PATH, O_RDWR | O_CREAT, 0666);
+		if (fd == -1) {
+			perror("open");
+			return NULL;
+		}
+		if (fstat(fd, &st) == -1) {
+			perror("fstat");
+			goto out;
+		}
+	}
+
+	if (S_ISREG(st.st_mode)) {
+		size_t align_to_2mb = (len + 2 * 1024 * 1024 - 1) & ~(2 * 1024 * 1024 - 1);
+		printf("Truncating %s to %ld\n", ALLOC_PATH, align_to_2mb);
+		if (ftruncate(fd, align_to_2mb) == -1) {
+			perror("ftruncate");
+			goto out;
+		}
+	}
+
+	// Align len to 4096
+	aligned_len = (len + 4095) & ~4095;
+
+	printf("mmapping %ld bytes at %ld (original len: %ld)\n", aligned_len, offset, len);
+
+	ret = mmap(NULL, offset + aligned_len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+	if (ret == MAP_FAILED) {
+		perror("mmap");
+		goto out;
+	}
+
+	offset += aligned_len;
+
+out:
+	// close(fd);
+	return ret;
+}
+
 #endif /* _BENCH_H */
