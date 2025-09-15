@@ -63,7 +63,7 @@ zone(char *disk, int oflag, int bsize)
 #endif
 
 	/*
-	 * We want ZONEPOINTS data points 
+	 * We want ZONEPOINTS data points
 	 * but the stride has to be at least 512 and a 512 multiple.
 	 * Weird code below for precision.
 	 */
@@ -162,7 +162,7 @@ seek(char *disk, int oflag)
 	 * If we have a 100MB fd, that means we do
 	 * 1, 99, 2, 98, etc.
 	 *
-	 * We want around SEEK POINTS data points 
+	 * We want around SEEK POINTS data points
 	 * but the stride has to be at least 512 and a 512 multiple.
 	 */
 	stride = size / SEEKPOINTS;

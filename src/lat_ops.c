@@ -1,14 +1,14 @@
 /*
  * lat_ops.c - benchmark of simple operations
  *
- * Copyright (c) 1996-2004 Carl Staelin and Larry McVoy.  
+ * Copyright (c) 1996-2004 Carl Staelin and Larry McVoy.
  *
  * This benchmark is meant to benchmark raw arithmetic operation
  * latency for various operations on various datatypes.  Obviously,
  * not all operations make sense for all datatypes (e.g., modulus
  * on float).  The benchmarks are configured to use interlocking
  * operations, so we measure the time of an individual operation.
- * 
+ *
  * The exception to the interlocking operation guidelines are the
  * vector operations, muladd and bogomflops, for both float and
  * double data types.  In this case we are trying to determine
@@ -75,7 +75,7 @@ cleanup(iter_t iterations, void* cookie)
 
 	if (iterations) return;
 
-	if (pState->data) 
+	if (pState->data)
 		free(pState->data);
 }
 
@@ -398,84 +398,84 @@ main(int ac, char **av)
 		}
 	}
 
-	benchmp(NULL, do_integer_bitwise, NULL, 
+	benchmp(NULL, do_integer_bitwise, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("integer bit", get_n() * 100 * 3);
-	
-	benchmp(NULL, do_integer_add, NULL, 
+
+	benchmp(NULL, do_integer_add, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("integer add", get_n() * 100 * 2);
 	iop_time = gettime();
 	iop_N = get_n() * 100 * 2;
-	
-	benchmp(NULL, do_integer_mul, NULL, 
+
+	benchmp(NULL, do_integer_mul, NULL,
 		0, 1, warmup, repetitions, &state);
 	settime(gettime() - (get_n() * 2 * iop_time) / iop_N);
 	nano("integer mul", get_n() * 10 * 2);
-	
-	benchmp(NULL, do_integer_div, NULL, 
+
+	benchmp(NULL, do_integer_div, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("integer div", get_n() * 100);
-	
-	benchmp(NULL, do_integer_mod, NULL, 
+
+	benchmp(NULL, do_integer_mod, NULL,
 		0, 1, warmup, repetitions, &state);
 	settime(gettime() - (get_n() *  100 * iop_time) / iop_N);
 	nano("integer mod", get_n() * 100);
-	
-	benchmp(NULL, do_int64_bitwise, NULL, 
+
+	benchmp(NULL, do_int64_bitwise, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("int64 bit", get_n() * 100 * 3);
 	iop_time = gettime();
 	iop_N = get_n() * 100 * 3;
 
-	benchmp(NULL, do_int64_add, NULL, 
+	benchmp(NULL, do_int64_add, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("int64 add", get_n() * 100 * 2);
-	
-	benchmp(NULL, do_int64_mul, NULL, 
+
+	benchmp(NULL, do_int64_mul, NULL,
 		0, 1, warmup, repetitions, &state);
 	settime(gettime() - (get_n() * 2 * iop_time) / iop_N);
 	nano("int64 mul", get_n() * 10 * 2);
-	
-	benchmp(NULL, do_int64_div, NULL, 
+
+	benchmp(NULL, do_int64_div, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("int64 div", get_n() * 100);
-	
-	benchmp(NULL, do_int64_mod, NULL, 
+
+	benchmp(NULL, do_int64_mod, NULL,
 		0, 1, warmup, repetitions, &state);
 	settime(gettime() - (get_n() * 100 * iop_time) / iop_N);
 	nano("int64 mod", get_n() * 100);
-	
-	benchmp(NULL, do_float_add, NULL, 
+
+	benchmp(NULL, do_float_add, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("float add", get_n() * (10 + 1) * 2);
-	
-	benchmp(NULL, do_float_mul, NULL, 
+
+	benchmp(NULL, do_float_mul, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("float mul", get_n() * 10 * 2 * 2);
-	
-	benchmp(NULL, do_float_div, NULL, 
+
+	benchmp(NULL, do_float_div, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("float div", get_n() * 100);
 
-	benchmp(NULL, do_double_add, NULL, 
+	benchmp(NULL, do_double_add, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("double add", get_n() * (10 + 1) * 2);
-	
-	benchmp(NULL, do_double_mul, NULL, 
+
+	benchmp(NULL, do_double_mul, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("double mul", get_n() * 10 * 2 * 2);
-	
-	benchmp(NULL, do_double_div, NULL, 
+
+	benchmp(NULL, do_double_div, NULL,
 		0, 1, warmup, repetitions, &state);
 	nano("double div", get_n() * 100);
 
-	benchmp(float_initialize, do_float_bogomflops, cleanup, 
+	benchmp(float_initialize, do_float_bogomflops, cleanup,
 		0, parallel, warmup, repetitions, &state);
 	nano("float bogomflops", get_n() * state.M);
 	fflush(stdout); fflush(stderr);
 
-	benchmp(double_initialize, do_double_bogomflops, cleanup, 
+	benchmp(double_initialize, do_double_bogomflops, cleanup,
 		0, parallel, warmup, repetitions, &state);
 	nano("double bogomflops", get_n() * state.M);
 	fflush(stdout); fflush(stderr);

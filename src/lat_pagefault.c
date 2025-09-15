@@ -1,7 +1,7 @@
 /*
  * lat_pagefault.c - time a page fault in
  *
- * Usage: lat_pagefault [-C] [-P <parallel>] [-W <warmup>] [-N <repetitions>] file 
+ * Usage: lat_pagefault [-C] [-P <parallel>] [-W <warmup>] [-N <repetitions>] file
  *
  * Copyright (c) 2000 Carl Staelin.
  * Copyright (c) 1994 Larry McVoy.  Distributed under the FSF GPL with
@@ -70,17 +70,17 @@ main(int ac, char **av)
 	if (optind != ac - 1 ) {
 		lmbench_usage(ac, av, usage);
 	}
-	
+
 	state.file = av[optind];
 	CHK(stat(state.file, &st));
 	state.npages = st.st_size / (size_t)getpagesize();
 
 #ifdef	MS_INVALIDATE
-	benchmp(initialize, benchmark_mmap, cleanup, 0, parallel, 
+	benchmp(initialize, benchmark_mmap, cleanup, 0, parallel,
 		warmup, repetitions, &state);
 	t_mmap = gettime() / (double)get_n();
 
-	benchmp(initialize, benchmark, cleanup, 0, parallel, 
+	benchmp(initialize, benchmark, cleanup, 0, parallel,
 		warmup, repetitions, &state);
 	t_combined = gettime() / (double)get_n();
 	settime(get_n() * (t_combined - t_mmap));
@@ -132,7 +132,7 @@ initialize(iter_t iterations, void* cookie)
 		fprintf(stderr, "lat_pagefault: %s too small\n", state->file);
 		exit(1);
 	}
-	state->where = mmap(0, state->size, 
+	state->where = mmap(0, state->size,
 			    PROT_READ, MAP_SHARED, state->fd, 0);
 
 #ifdef	MS_INVALIDATE
@@ -145,7 +145,7 @@ initialize(iter_t iterations, void* cookie)
 
 void
 cleanup(iter_t iterations, void* cookie)
-{	
+{
 	state_t *state = (state_t *) cookie;
 
 	if (iterations) return;
@@ -167,7 +167,7 @@ benchmark(iter_t iterations, void* cookie)
 			sum += *(state->where + state->pages[i]);
 		}
 		munmap(state->where, state->size);
-		state->where = mmap(0, state->size, 
+		state->where = mmap(0, state->size,
 				    PROT_READ, MAP_SHARED, state->fd, 0);
 #ifdef	MS_INVALIDATE
 		if (msync(state->where, state->size, MS_INVALIDATE) != 0) {
@@ -188,7 +188,7 @@ benchmark_mmap(iter_t iterations, void* cookie)
 
 	while (iterations-- > 0) {
 		munmap(state->where, state->size);
-		state->where = mmap(0, state->size, 
+		state->where = mmap(0, state->size,
 				    PROT_READ, MAP_SHARED, state->fd, 0);
 #ifdef	MS_INVALIDATE
 		if (msync(state->where, state->size, MS_INVALIDATE) != 0) {

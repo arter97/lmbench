@@ -16,7 +16,7 @@ struct _state {
 	char**	dirs;
 	size_t	size;
 };
-void	measure(size_t size, 
+void	measure(size_t size,
 		int parallel, int warmup, int repetitions, void* cookie);
 void	mkfile(char* s, size_t size);
 void	setup_names(iter_t iterations, void* cookie);
@@ -77,7 +77,7 @@ main(int ac, char **av)
 	} else {
 		for (i = 0; i < sizeof(sizes)/sizeof(int); ++i) {
 			state.size = sizes[i];
-			measure(state.size, 
+			measure(state.size,
 				parallel, warmup, repetitions, &state);
 		}
 	}
@@ -91,7 +91,7 @@ measure(size_t size, int parallel, int warmup, int repetitions, void* cookie)
 	benchmp(setup_names, benchmark_mk, cleanup_mk, 0, parallel,
 		warmup, repetitions, cookie);
 	if (gettime()) {
-		fprintf(stderr, "\t%lu\t%.0f", (unsigned long)get_n(), 
+		fprintf(stderr, "\t%lu\t%.0f", (unsigned long)get_n(),
 			(double)(1000000. * get_n() / (double)gettime()));
 	} else {
 		fprintf(stderr, "\t-1\t-1");
@@ -100,7 +100,7 @@ measure(size_t size, int parallel, int warmup, int repetitions, void* cookie)
 	benchmp(setup_rm, benchmark_rm, cleanup_names, 0, parallel,
 		warmup, repetitions, cookie);
 	if (gettime()) {
-		fprintf(stderr, "\t%.0f", 
+		fprintf(stderr, "\t%.0f",
 			(double)(1000000. * get_n() / (double)gettime()));
 	} else {
 		fprintf(stderr, "\t-1");

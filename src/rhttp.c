@@ -1,9 +1,9 @@
 /*
  * rhttp.c - simple HTTP transaction latency test
  *
- * usage: rhttp hostname [port] remote-clients -p file file 
+ * usage: rhttp hostname [port] remote-clients -p file file
  *
- * This turns into a bunch of 
+ * This turns into a bunch of
  *	rsh remote http hostname file file file [port]
  * with the results aggragated and reported.
  *
@@ -93,7 +93,7 @@ usage:		fprintf(stderr,
 		}
 		wait(0);
 	}
-	system("cat /tmp/rhttp*; rm /tmp/rhttp*"); 
+	system("cat /tmp/rhttp*; rm /tmp/rhttp*");
 	exit(1);
 	for (i = 1; i < ac; ++i) {
 		int	fd, n, m = 0;
@@ -106,12 +106,12 @@ usage:		fprintf(stderr,
 		sprintf(buf, "/tmp/http%d", i);
 		fd = open(buf, 0);
 		unlink(buf);
-		/* 
+		/*
 		 * Avg xfer: 3.9KB, 235.0KB in 2038 millisecs, 115.31 KB/sec
 		 */
 		n = read(fd, buf, XFERSIZE);
 		buf[n] = 0;
-		sscanf(buf, "Avg xfer: %fKB, %fKB in %d millisecs,", 
+		sscanf(buf, "Avg xfer: %fKB, %fKB in %d millisecs,",
 		    &f1, &f2, &m);
 		if (m > usecs) {
 			usecs = m;

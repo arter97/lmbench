@@ -136,7 +136,7 @@ main(int ac, char **av)
 	int	repetitions = TRIES;
 	int	c;
 	char	usage[1024];
-	
+
 	sprintf(usage,"[-C] [-P <parallelism>] [-W <warmup>] [-N <repetitions>] <size> open2close|io_only <filename>"
 		"\nmin size=%d\n",(int) (XFERSIZE>>10)) ;
 

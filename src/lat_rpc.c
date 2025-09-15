@@ -28,7 +28,7 @@ doit(CLIENT *cl, char *server)
 {
 	char	c = 1;
 	char	*resp;
-	
+
 	resp = client_rpc_xact_1(&c, cl);
 	if (!resp) {
 		clnt_perror(cl, server);
@@ -61,7 +61,7 @@ initialize(iter_t iterations, void* cookie)
 
 	if (iterations) return;
 
-	state->cl = clnt_create(state->server, XACT_PROG, XACT_VERS, 
+	state->cl = clnt_create(state->server, XACT_PROG, XACT_VERS,
 				state->protocol);
 	if (!state->cl) {
 		clnt_pcreateerror(state->server);
@@ -120,7 +120,7 @@ main(int ac, char **av)
 				clnt_pcreateerror(state.server);
 				exit(1);
 			}
-			clnt_call(cl, RPC_EXIT, (xdrproc_t)xdr_void, 0, 
+			clnt_call(cl, RPC_EXIT, (xdrproc_t)xdr_void, 0,
 				  (xdrproc_t)xdr_void, 0, TIMEOUT);
 			exit(0);
 		}
@@ -155,7 +155,7 @@ main(int ac, char **av)
 
 	if (protocol == NULL || !strcasecmp(protocol, proto[0])) {
 		state.protocol = proto[0];
-		benchmp(initialize, benchmark, NULL, MEDIUM, parallel, 
+		benchmp(initialize, benchmark, NULL, MEDIUM, parallel,
 			warmup, repetitions, &state);
 		sprintf(buf, "RPC/%s latency using %s", proto[0], state.server);
 		micro(buf, get_n());
@@ -163,12 +163,12 @@ main(int ac, char **av)
 
 	if (protocol == NULL || !strcasecmp(protocol, proto[1])) {
 		state.protocol = proto[1];
-		benchmp(initialize, benchmark, NULL, MEDIUM, parallel, 
+		benchmp(initialize, benchmark, NULL, MEDIUM, parallel,
 			warmup, repetitions, &state);
 		sprintf(buf, "RPC/%s latency using %s", proto[1], state.server);
 		micro(buf, get_n());
 	}
-		
+
 	exit(0);
 }
 

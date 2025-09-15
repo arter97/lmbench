@@ -40,7 +40,7 @@ do_install(iter_t iterations, void* cookie)
 
 	while (iterations-- > 0) {
 		sa.sa_handler = handler;
-		sigemptyset(&sa.sa_mask);	
+		sigemptyset(&sa.sa_mask);
 		sa.sa_flags = 0;
 		sigaction(SIGUSR1, &sa, &old);
 	}
@@ -54,7 +54,7 @@ do_catch(iter_t iterations, void* cookie)
 	double	u;
 
 	sa.sa_handler = handler;
-	sigemptyset(&sa.sa_mask);	
+	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sigaction(SIGUSR1, &sa, &old);
 
@@ -123,13 +123,13 @@ bench_catch(int parallel, int warmup, int repetitions)
 	uint64 t, send_usecs, send_n;
 
 	/* measure cost of sending signal */
-	benchmp(NULL, do_send, NULL, 0, parallel, 
+	benchmp(NULL, do_send, NULL, 0, parallel,
 		warmup, repetitions, NULL);
 	send_usecs = gettime();
 	send_n = get_n();
 
 	/* measure cost of sending & catching signal */
-	benchmp(NULL, do_catch, NULL, 0, parallel, 
+	benchmp(NULL, do_catch, NULL, 0, parallel,
 		warmup, repetitions, NULL);
 
 	/* subtract cost of sending signal */
@@ -156,7 +156,7 @@ bench_prot(char* fname, int parallel, int warmup, int repetitions)
 	catch_usecs = gettime();
 	catch_n = get_n();
 
-	benchmp(initialize, do_prot, NULL, 0, parallel, 
+	benchmp(initialize, do_prot, NULL, 0, parallel,
 		warmup, repetitions, &state);
 	if (gettime() > (catch_usecs * get_n()) / catch_n) {
 		settime(gettime() - (catch_usecs * get_n()) / catch_n);
@@ -197,7 +197,7 @@ main(int ac, char **av)
 	}
 
 	if (!strcmp("install", av[optind])) {
-		benchmp(NULL, do_install, NULL, 0, parallel, 
+		benchmp(NULL, do_install, NULL, 0, parallel,
 			warmup, repetitions, NULL);
 		micro("Signal handler installation", get_n());
 	} else if (!strcmp("catch", av[optind])) {

@@ -66,11 +66,11 @@ main(int ac, char **av)
 		}
 	}
 
-	for (i = MAX_MEM_PARALLELISM * state.line; i <= maxlen; i<<=1) { 
+	for (i = MAX_MEM_PARALLELISM * state.line; i <= maxlen; i<<=1) {
 		par = par_mem(i, warmup, repetitions, &state);
 
 		if (par > 0.) {
-			fprintf(stderr, "%.6f %.2f\n", 
+			fprintf(stderr, "%.6f %.2f\n",
 				i / (1000. * 1000.), par);
 		}
 	}

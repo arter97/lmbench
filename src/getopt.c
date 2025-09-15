@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 1997 L.W.McVoy 
+ * Copyright (c) 1997 L.W.McVoy
  *
  * SGI's fucking getopt doesn't follow GNU's reset policy.  Isn't having
  * N versions of Unix a great thing for the world?  I'm gonna move to NT
@@ -17,7 +17,7 @@
  *	-r<arg> -R<arg>, etc.
  *
  * A special form is "d|" instead of "d:".  This means the arg has to be
- * right next to the option.  
+ * right next to the option.
  * Another special form is "d;".  This means the option must be right next
  * to the option letter and can not be blank.
  */
@@ -51,7 +51,7 @@ getopt(int ac, char **av, char *opts)
 			break;
 		}
 	}
-	if (!*t) { 
+	if (!*t) {
 		optopt = av[optind][n];
 		debug((stderr, "\tran out of option letters\n"));
 		return ('?');
@@ -82,8 +82,8 @@ getopt(int ac, char **av, char *opts)
 		n = 1;
 		debug((stderr, "\t%c with %s\n", *t, optarg));
 		return (*t);
-	} 
-	
+	}
+
 	/* If it was not there, and it is optional, OK */
 	if (t[1] == '|') {
 		optarg = 0;
@@ -127,15 +127,15 @@ main(int ac, char **av)
 
 	while ((c = getopt(ac, av, "fnpsx:y|")) != -1) {
 		switch (c) {
-		    case 'f': 
-		    case 'n': 
-		    case 'p': 
-		    case 's': 
+		    case 'f':
+		    case 'n':
+		    case 'p':
+		    case 's':
 		    	printf("Got option %c\n", c);
 			break;
 		    case 'x':
 		    case 'y':
-		   	 comment = optarg; 
+		   	 comment = optarg;
 			 printf("Got optarg %s with -%c\n", comment, c);
 			 break;
 		    case '?':

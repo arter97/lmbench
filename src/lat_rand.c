@@ -23,7 +23,7 @@ void bench_rand(iter_t iterations, void *cookie);
 #ifdef HAVE_RANDOM
 void bench_random(iter_t iterations, void *cookie);
 #endif
-int 
+int
 main(int ac, char **av)
 {
 	int parallel = 1;
@@ -76,7 +76,7 @@ main(int ac, char **av)
 }
 
 #ifdef HAVE_DRAND48
-void 
+void
 bench_drand48(register iter_t iterations, void *cookie)
 {
 	register double v = 0.0;
@@ -86,7 +86,7 @@ bench_drand48(register iter_t iterations, void *cookie)
 	use_int((int)v);
 }
 
-void 
+void
 bench_lrand48(register iter_t iterations, void *cookie)
 {
 	register long v = 0.0;
@@ -97,7 +97,7 @@ bench_lrand48(register iter_t iterations, void *cookie)
 }
 #endif /* HAVE_DRAND48 */
 #ifdef HAVE_RAND
-void 
+void
 bench_rand(register iter_t iterations, void *cookie)
 {
 	register int v = 0.0;
@@ -108,7 +108,7 @@ bench_rand(register iter_t iterations, void *cookie)
 }
 #endif /* HAVE_RAND */
 #ifdef HAVE_RANDOM
-void 
+void
 bench_random(register iter_t iterations, void *cookie)
 {
 	register int v = 0.0;

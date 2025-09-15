@@ -3,10 +3,10 @@
  *
  * usage: lat_mem_rd [-P <parallelism>] [-W <warmup>] [-N <repetitions>] [-t] size-in-MB [stride ...]
  *
- * Copyright (c) 1994 Larry McVoy.  
+ * Copyright (c) 1994 Larry McVoy.
  * Copyright (c) 2003, 2004 Carl Staelin.
  *
- * Distributed under the FSF GPL with additional restriction that results 
+ * Distributed under the FSF GPL with additional restriction that results
  * may published only if:
  * (1) the benchmark is unmodified, and
  * (2) the version in the sccsid below is included in the report.
@@ -17,7 +17,7 @@ char	*id = "$Id: s.lat_mem_rd.c 1.13 98/06/30 16:13:49-07:00 lm@lm.bitmover.com 
 #include "bench.h"
 #define STRIDE  (512/sizeof(char *))
 #define	LOWER	512
-void	loads(size_t len, size_t range, size_t stride, 
+void	loads(size_t len, size_t range, size_t stride,
 	      int parallel, int warmup, int repetitions);
 size_t	step(size_t k);
 void	initialize(iter_t iterations, void* cookie);
@@ -67,7 +67,7 @@ main(int ac, char **av)
 	if (optind == ac - 1) {
 		fprintf(stderr, "\"stride=%d\n", STRIDE);
 		for (range = LOWER; range <= len; range = step(range)) {
-			loads(len, range, STRIDE, parallel, 
+			loads(len, range, STRIDE, parallel,
 			      warmup, repetitions);
 		}
 	} else {
@@ -75,7 +75,7 @@ main(int ac, char **av)
 			stride = bytes(av[i]);
 			fprintf(stderr, "\"stride=%d\n", stride);
 			for (range = LOWER; range <= len; range = step(range)) {
-				loads(len, range, stride, parallel, 
+				loads(len, range, stride, parallel,
 				      warmup, repetitions);
 			}
 			fprintf(stderr, "\n");
@@ -111,7 +111,7 @@ benchmark_loads(iter_t iterations, void *cookie)
 
 
 void
-loads(size_t len, size_t range, size_t stride, 
+loads(size_t len, size_t range, size_t stride,
 	int parallel, int warmup, int repetitions)
 {
 	double result;
@@ -140,7 +140,7 @@ loads(size_t len, size_t range, size_t stride,
 	/*
 	 * Now walk them and time it.
 	 */
-	benchmp(fpInit, benchmark_loads, mem_cleanup, 
+	benchmp(fpInit, benchmark_loads, mem_cleanup,
 		100000, parallel, warmup, repetitions, &state);
 #endif
 

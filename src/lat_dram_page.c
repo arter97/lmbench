@@ -126,7 +126,7 @@ regroup(size_t* pages, int groupsize, void* cookie)
 			*(char**)(p + pages[i] + j) = p + pages[i+1] + j;
 		}
 	}
-	
+
 	/*
 	 * for the last page, point to the next line
 	 * in the first page of the group, except for
@@ -158,7 +158,7 @@ dram_page_initialize(iter_t iterations, void* cookie)
 	struct mem_state* state = (struct mem_state*)cookie;
 	struct dram_page_state*	dstate = (struct dram_page_state*)cookie;
 
-	if (iterations) return; 
+	if (iterations) return;
 
 	mem_initialize(iterations, cookie);
 
@@ -188,7 +188,7 @@ loads(benchmp_f initialize, int len, int warmup, int repetitions, void* cookie)
 	/*
 	 * Now walk them and time it.
 	 */
-	benchmp(initialize, benchmark_loads, mem_cleanup, 
+	benchmp(initialize, benchmark_loads, mem_cleanup,
 		0, parallel, warmup, repetitions, cookie);
 
 	/* We want to get to nanoseconds / load. */

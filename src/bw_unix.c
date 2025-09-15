@@ -4,9 +4,9 @@
  * Usage: bw_unix [-m <message size>] [-M <total bytes>] \
  *		[-P <parallelism>] [-W <warmup>] [-N <repetitions>]
  *
- * Copyright (c) 1994 Larry McVoy.  
+ * Copyright (c) 1994 Larry McVoy.
  * Copyright (c) 2002 Carl Staelin.
- * Distributed under the FSF GPL with additional restriction that results 
+ * Distributed under the FSF GPL with additional restriction that results
  * may published only if:
  * (1) the benchmark is unmodified, and
  * (2) the version in the sccsid below is included in the report.
@@ -31,7 +31,7 @@ struct _state {
 	int	initerr;
 };
 
-void 
+void
 initialize(iter_t iterations, void* cookie)
 {
 	struct _state* state = (struct _state*)cookie;
@@ -60,7 +60,7 @@ initialize(iter_t iterations, void* cookie)
 		writer(state->control[0], state->pipes[1], state->buf, state);
 		return;
 		/*NOTREACHED*/
-	    
+
 	    case -1:
 		perror("fork");
 		state->initerr = 3;
@@ -73,7 +73,7 @@ initialize(iter_t iterations, void* cookie)
 	close(state->control[0]);
 	close(state->pipes[1]);
 }
-void 
+void
 cleanup(iter_t iterations, void*  cookie)
 {
 	struct _state* state = (struct _state*)cookie;
@@ -89,7 +89,7 @@ cleanup(iter_t iterations, void*  cookie)
 	state->pid = 0;
 }
 
-void 
+void
 reader(iter_t iterations, void* cookie)
 {
 	struct _state* state = (struct _state*)cookie;
@@ -176,7 +176,7 @@ main(int argc, char *argv[])
 		state.bytes += state.bytes - state.bytes % state.xfer;
 	}
 
-	benchmp(initialize, reader, cleanup, MEDIUM, parallel, 
+	benchmp(initialize, reader, cleanup, MEDIUM, parallel,
 		warmup, repetitions, &state);
 
 	if (gettime() > 0) {

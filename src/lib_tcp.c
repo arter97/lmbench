@@ -175,7 +175,7 @@ tcp_connect(char *host, int prog, int rdwr)
 		}
 	}
 	if (connect(sock, (struct sockaddr*)&s, sizeof(s)) < 0) {
-		if (errno == ECONNRESET 
+		if (errno == ECONNRESET
 		    || errno == ECONNREFUSED
 		    || errno == EAGAIN) {
 			close(sock);

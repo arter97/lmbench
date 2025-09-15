@@ -85,7 +85,7 @@ main(int ac, char **av)
 			break;
 		}
 	}
-	
+
 	if (optind >= ac || optind < ac - 2) {
 		lmbench_usage(ac, av, usage);
 		exit(0);

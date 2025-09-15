@@ -21,7 +21,7 @@ typedef struct _state {
 	pid_t	pid;
 } state_t;
 
-int 
+int
 main(int ac, char **av)
 {
 	int c;
@@ -78,8 +78,8 @@ cleanup(iter_t iterations, void* cookie)
 		state->pid = 0;
 	}
 }
-	
-void 
+
+void
 bench(register iter_t iterations, void *cookie)
 {
 	state_t *state = (state_t *) cookie;

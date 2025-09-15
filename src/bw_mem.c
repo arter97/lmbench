@@ -104,38 +104,38 @@ main(int ac, char **av)
 	    streq(av[optind+1], "fcp") || streq(av[optind+1], "bcopy")) {
 		state.need_buf2 = 1;
 	}
-		
+
 	if (streq(av[optind+1], "rd")) {
-		benchmp(init_loop, rd, cleanup, 0, parallel, 
+		benchmp(init_loop, rd, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 	} else if (streq(av[optind+1], "wr")) {
-		benchmp(init_loop, wr, cleanup, 0, parallel, 
+		benchmp(init_loop, wr, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 	} else if (streq(av[optind+1], "rdwr")) {
-		benchmp(init_loop, rdwr, cleanup, 0, parallel, 
+		benchmp(init_loop, rdwr, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 	} else if (streq(av[optind+1], "cp")) {
-		benchmp(init_loop, mcp, cleanup, 0, parallel, 
+		benchmp(init_loop, mcp, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 	} else if (streq(av[optind+1], "frd")) {
-		benchmp(init_loop, frd, cleanup, 0, parallel, 
+		benchmp(init_loop, frd, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 	} else if (streq(av[optind+1], "fwr")) {
-		benchmp(init_loop, fwr, cleanup, 0, parallel, 
+		benchmp(init_loop, fwr, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 	} else if (streq(av[optind+1], "fcp")) {
-		benchmp(init_loop, fcp, cleanup, 0, parallel, 
+		benchmp(init_loop, fcp, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 	} else if (streq(av[optind+1], "bzero")) {
-		benchmp(init_loop, loop_bzero, cleanup, 0, parallel, 
+		benchmp(init_loop, loop_bzero, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 	} else if (streq(av[optind+1], "bcopy")) {
-		benchmp(init_loop, loop_bcopy, cleanup, 0, parallel, 
+		benchmp(init_loop, loop_bcopy, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 	} else {
 		lmbench_usage(ac, av, usage);
 	}
-	adjusted_bandwidth(gettime(), nbytes, 
+	adjusted_bandwidth(gettime(), nbytes,
 			   get_n() * parallel, state.overhead);
 	return(0);
 }
@@ -196,7 +196,7 @@ cleanup(iter_t iterations, void *cookie)
 
 void
 rd(iter_t iterations, void *cookie)
-{	
+{
 	state_t *state = (state_t *) cookie;
 	register TYPE *lastone = state->lastone;
 	register int sum = 0;
@@ -204,13 +204,13 @@ rd(iter_t iterations, void *cookie)
 	while (iterations-- > 0) {
 	    register TYPE *p = state->buf;
 	    while (p <= lastone) {
-		sum += 
+		sum +=
 #define	DOIT(i)	p[i]+
 		DOIT(0) DOIT(4) DOIT(8) DOIT(12) DOIT(16) DOIT(20) DOIT(24)
 		DOIT(28) DOIT(32) DOIT(36) DOIT(40) DOIT(44) DOIT(48) DOIT(52)
 		DOIT(56) DOIT(60) DOIT(64) DOIT(68) DOIT(72) DOIT(76)
 		DOIT(80) DOIT(84) DOIT(88) DOIT(92) DOIT(96) DOIT(100)
-		DOIT(104) DOIT(108) DOIT(112) DOIT(116) DOIT(120) 
+		DOIT(104) DOIT(108) DOIT(112) DOIT(116) DOIT(120)
 		p[124];
 		p +=  128;
 	    }
@@ -221,7 +221,7 @@ rd(iter_t iterations, void *cookie)
 
 void
 wr(iter_t iterations, void *cookie)
-{	
+{
 	state_t *state = (state_t *) cookie;
 	register TYPE *lastone = state->lastone;
 
@@ -242,7 +242,7 @@ wr(iter_t iterations, void *cookie)
 
 void
 rdwr(iter_t iterations, void *cookie)
-{	
+{
 	state_t *state = (state_t *) cookie;
 	register TYPE *lastone = state->lastone;
 	register int sum = 0;
@@ -265,7 +265,7 @@ rdwr(iter_t iterations, void *cookie)
 
 void
 mcp(iter_t iterations, void *cookie)
-{	
+{
 	state_t *state = (state_t *) cookie;
 	register TYPE *lastone = state->lastone;
 	TYPE* p_save = NULL;
@@ -291,7 +291,7 @@ mcp(iter_t iterations, void *cookie)
 
 void
 fwr(iter_t iterations, void *cookie)
-{	
+{
 	state_t *state = (state_t *) cookie;
 	register TYPE *lastone = state->lastone;
 	TYPE* p_save = NULL;
@@ -332,7 +332,7 @@ fwr(iter_t iterations, void *cookie)
 
 void
 frd(iter_t iterations, void *cookie)
-{	
+{
 	state_t *state = (state_t *) cookie;
 	register int sum = 0;
 	register TYPE *lastone = state->lastone;
@@ -373,7 +373,7 @@ frd(iter_t iterations, void *cookie)
 
 void
 fcp(iter_t iterations, void *cookie)
-{	
+{
 	state_t *state = (state_t *) cookie;
 	register TYPE *lastone = state->lastone;
 
@@ -412,7 +412,7 @@ fcp(iter_t iterations, void *cookie)
 
 void
 loop_bzero(iter_t iterations, void *cookie)
-{	
+{
 	state_t *state = (state_t *) cookie;
 	register TYPE *p = state->buf;
 	register TYPE *dst = state->buf2;
@@ -425,7 +425,7 @@ loop_bzero(iter_t iterations, void *cookie)
 
 void
 loop_bcopy(iter_t iterations, void *cookie)
-{	
+{
 	state_t *state = (state_t *) cookie;
 	register TYPE *p = state->buf;
 	register TYPE *dst = state->buf2;
@@ -446,7 +446,7 @@ void adjusted_bandwidth(uint64 time, uint64 bytes, uint64 iter, double overhd)
 	extern FILE *ftiming;
 	double secs = ((double)time / (double)iter - overhd) / 1000000.0;
 	double mb;
-	
+
         mb = bytes / MB;
 
 	if (secs <= 0.)

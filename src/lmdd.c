@@ -161,7 +161,7 @@ void    done();
 extern int dbg;
 #endif
 
-int 
+int
 main(int ac, char **av)
 {
 	uint  *buf;
@@ -243,7 +243,7 @@ main(int ac, char **av)
 	timeopen = getarg("timeopen=", ac, av);
 	pad_in = getarg("padin=", ac, av);
 	if (pad_in == -1) pad_in = 0;
-	
+
 	if (nbufs == -1) nbufs = 1;
 	if (nbufs > 10) { printf("Too many bufs\n"); exit(1); }
 #ifdef	DBG
@@ -408,17 +408,17 @@ main(int ac, char **av)
 				start(&start_tv);
 			}
 			moved = read(in, buf, Bsize);
-			
+
 			if (pad_in) { /* ignore this run, restart clock */
 			    pad_in = 0;
 			    count++;
 			    start(NULL);
 			    continue;
 			}
-			
+
 			if ((Rtmax != -1) || (Rtmin != -1)) {
 				int mics = stop(&start_tv, &stop_tv);
-				
+
 				mills = mics / 1000;
 				if ((mills > Rtmax) || (mills < Rtmin)) {
 					fprintf(stderr,
@@ -500,7 +500,7 @@ main(int ac, char **av)
 					    (uint)(off + foo*sizeof(int));
 				}
 			}
-			if ((Wtmax != -1) || (Wtmin != -1)) { 
+			if ((Wtmax != -1) || (Wtmin != -1)) {
 				start(&start_tv);
 			}
 #ifdef	USE_BDS
@@ -612,7 +612,7 @@ been_there(uint64 off)
 	return (0);
 }
 
-void 
+void
 chkarg(char *arg)
 {
 	int	i;
@@ -633,7 +633,7 @@ chkarg(char *arg)
 	/*NOTREACHED*/
 }
 
-void 
+void
 done(void)
 {
 	int	i;
@@ -728,7 +728,7 @@ done(void)
 	exit(0);
 }
 
-uint64 
+uint64
 getarg(char *s, int ac, char **av)
 {
 	register uint64 len, i;
@@ -762,7 +762,7 @@ getarg(char *s, int ac, char **av)
 
 char	*output;
 
-int 
+int
 getfile(char *s, int ac, char **av)
 {
 	register int ret, len, i;
@@ -813,7 +813,7 @@ getfile(char *s, int ac, char **av)
 #ifdef F_FSSETXATTR
 				if (Realtime == 1) {
 					struct fsxattr fsxattr;
-				
+
 					bzero(&fsxattr,sizeof(struct fsxattr));
 					fsxattr.fsx_xflags = 0x1;
 					if (fcntl(ret,F_FSSETXATTR,&fsxattr)){
@@ -851,7 +851,7 @@ getfile(char *s, int ac, char **av)
 }
 
 #ifdef	FLUSH
-int 
+int
 warning(char *s)
 {
 	if ((long)Label != -1) {
@@ -882,7 +882,7 @@ flush(void)
 }
 #endif
 
-void 
+void
 error(char *s)
 {
 	if ((long)Label != -1) {

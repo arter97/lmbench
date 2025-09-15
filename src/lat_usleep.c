@@ -2,11 +2,11 @@
  * lat_usleep.c - usleep duration/latency
  *
  * The APIs for usleep(3), nanosleep(2), select(2), pselect(2),
- * getitimer(2) and setitimer(2) support resolutions down to 
- * a micro-second.  However, many implementations do not support 
- * such resolution.  Most current implementations (as of Fall 
- * 2002) simply put the process back on the run queue and the 
- * process may get run on the next scheduler time slice (10-20 
+ * getitimer(2) and setitimer(2) support resolutions down to
+ * a micro-second.  However, many implementations do not support
+ * such resolution.  Most current implementations (as of Fall
+ * 2002) simply put the process back on the run queue and the
+ * process may get run on the next scheduler time slice (10-20
  * milli-second resolution).
  *
  * This benchmark measures the true latency from the timer/sleep
@@ -135,12 +135,12 @@ bench_itimer(iter_t iterations, void *cookie)
     caught = 0;
 
     /*
-     * start the first timing interval 
+     * start the first timing interval
      */
     start(0);
 
     /*
-     * create the first timer, causing us to jump to interval() 
+     * create the first timer, causing us to jump to interval()
      */
     setitimer(ITIMER_REAL, &value, NULL);
 
@@ -228,25 +228,25 @@ main(int ac, char **av)
 
     switch (what) {
     case USLEEP:
-	benchmp(NULL, bench_usleep, NULL, 
+	benchmp(NULL, bench_usleep, NULL,
 		0, parallel, warmup, repetitions, &state);
 	break;
     case NANOSLEEP:
-	benchmp(NULL, bench_nanosleep, NULL, 
+	benchmp(NULL, bench_nanosleep, NULL,
 		0, parallel, warmup, repetitions, &state);
 	break;
     case SELECT:
-	benchmp(NULL, bench_select, NULL, 
+	benchmp(NULL, bench_select, NULL,
 		0, parallel, warmup, repetitions, &state);
 	break;
 #ifdef _POSIX_SELECT
     case PSELECT:
-	benchmp(NULL, bench_pselect, NULL, 
+	benchmp(NULL, bench_pselect, NULL,
 		0, parallel, warmup, repetitions, &state);
 	break;
 #endif /* _POSIX_SELECT */
     case ITIMER:
-	benchmp(initialize, bench_itimer, NULL, 
+	benchmp(initialize, bench_itimer, NULL,
 		0, parallel, warmup, repetitions, &state);
 	break;
     default:

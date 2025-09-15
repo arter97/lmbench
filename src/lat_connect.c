@@ -12,7 +12,7 @@
  * up the set of available connections with TIME_WAIT connections.
  * We can only measure the TCP connection cost accurately if we
  * do just a few connections.  Since the parallel harness needs
- * each child to run for a second, this guarantees that the 
+ * each child to run for a second, this guarantees that the
  * parallel version will generate inaccurate results.
  *
  * Copyright (c) 1994 Larry McVoy.  Distributed under the FSF GPL with
@@ -83,7 +83,7 @@ doclient(iter_t iterations, void *cookie)
 	state_t *state = (state_t *) cookie;
 	register char	*server = state->server;
 	register int 	sock;
-	
+
 	while (iterations-- > 0) {
 		sock = tcp_connect(server, TCP_CONNECT, SOCKOPT_REUSE);
 		close(sock);

@@ -217,7 +217,7 @@ result_t* get_results();
 	__usecs -= t_overhead() + get_n() * l_overhead();		\
 	settime(__usecs >= 0. ? (uint64)__usecs : 0);			\
 }
-	
+
 #define	BENCH_INNER(loop_body, enough) { 				\
 	static iter_t	__iterations = 1;				\
 	int		__enough = get_enough(enough);			\
@@ -263,17 +263,17 @@ int	getopt(int ac, char **av, char *opts);
 typedef u_long iter_t;
 typedef void (*benchmp_f)(iter_t iterations, void* cookie);
 
-extern void benchmp(benchmp_f initialize, 
+extern void benchmp(benchmp_f initialize,
 		    benchmp_f benchmark,
 		    benchmp_f cleanup,
-		    int enough, 
+		    int enough,
 		    int parallel,
 		    int warmup,
 		    int repetitions,
 		    void* cookie
 	);
 
-/* 
+/*
  * These are used by weird benchmarks which cannot return, such as page
  * protection fault handling.  See lat_sig.c for sample usage.
  */

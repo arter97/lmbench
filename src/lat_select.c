@@ -74,7 +74,7 @@ main(int ac, char **av)
 	if (streq("tcp", av[optind])) {
 		state.fid_f = open_socket;
 		server(&state);
-		benchmp(initialize, doit, cleanup, 0, parallel, 
+		benchmp(initialize, doit, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 		sprintf(buf, "Select on %d tcp fd's", state.num);
 		kill(state.pid, SIGKILL);
@@ -83,7 +83,7 @@ main(int ac, char **av)
 	} else if (streq("file", av[optind])) {
 		state.fid_f = open_file;
 		server(&state);
-		benchmp(initialize, doit, cleanup, 0, parallel, 
+		benchmp(initialize, doit, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 		unlink(state.fname);
 		sprintf(buf, "Select on %d fd's", state.num);
@@ -165,7 +165,7 @@ doit(iter_t iterations, void * cookie)
 	fd_set		nosave;
 	static struct timeval tv;
 	static count = 0;
-	
+
 	tv.tv_sec = 0;
 	tv.tv_usec = 0;
 
@@ -220,4 +220,4 @@ cleanup(iter_t iterations, void *cookie)
 	FD_ZERO(&(state->set));
 }
 
-	     
+

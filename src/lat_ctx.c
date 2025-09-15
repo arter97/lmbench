@@ -1,5 +1,5 @@
 /*
- * lat_ctx.c - context switch timer 
+ * lat_ctx.c - context switch timer
  *
  * usage: lat_ctx [-P parallelism] [-W <warmup>] [-N <repetitions>] [-s size] #procs [#procs....]
  *
@@ -99,18 +99,18 @@ main(int ac, char **av)
 			maxprocs = state.procs;
 	}
 	state.procs = maxprocs;
-	benchmp(initialize_overhead, benchmark_overhead, cleanup_overhead, 
+	benchmp(initialize_overhead, benchmark_overhead, cleanup_overhead,
 		0, 1, warmup, repetitions, &state);
 	if (gettime() == 0) return(0);
 	state.overhead = gettime();
 	state.overhead /= get_n();
-	fprintf(stderr, "\n\"size=%dk ovr=%.2f\n", 
+	fprintf(stderr, "\n\"size=%dk ovr=%.2f\n",
 		state.process_size/1024, state.overhead);
 
 	/* compute the context switch cost for N processes */
 	for (i = optind; i < ac; ++i) {
 		state.procs = atoi(av[i]);
-		benchmp(initialize, benchmark, cleanup, 0, parallel, 
+		benchmp(initialize, benchmark, cleanup, 0, parallel,
 			warmup, repetitions, &state);
 
 		time = gettime();
@@ -181,7 +181,7 @@ benchmark_overhead(iter_t iterations, void* cookie)
 	while (iterations-- > 0) {
 		if (write(pState->p[i][1], &msg, sizeof(msg)) != sizeof(msg)) {
 			/* perror("read/write on pipe"); */
-			exit(1);				
+			exit(1);
 		}
 		if (read(pState->p[i][0], &msg, sizeof(msg)) != sizeof(msg)) {
 			/* perror("read/write on pipe"); */
@@ -194,7 +194,7 @@ benchmark_overhead(iter_t iterations, void* cookie)
 	}
 }
 
-void 
+void
 initialize(iter_t iterations, void* cookie)
 {
 	int procs;
@@ -208,7 +208,7 @@ initialize(iter_t iterations, void* cookie)
 	if (pState->pids == NULL)
 		exit(1);
 	bzero((void*)pState->pids, pState->procs * sizeof(pid_t));
-	procs = create_daemons(pState->p, pState->pids, 
+	procs = create_daemons(pState->p, pState->pids,
 			       pState->procs, pState->process_size);
 	if (procs < pState->procs) {
 		cleanup(0, cookie);

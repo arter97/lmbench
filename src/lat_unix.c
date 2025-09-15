@@ -3,8 +3,8 @@
  *
  *	lat_unix [-P <parallelism>] [-W <warmup>] [-N <repetitions>]
  *
- * Copyright (c) 1994-2000 Carl Staelin and Larry McVoy.  
- * Distributed under the FSF GPL with additional restriction that 
+ * Copyright (c) 1994-2000 Carl Staelin and Larry McVoy.
+ * Distributed under the FSF GPL with additional restriction that
  * results may published only if
  * (1) the benchmark is unmodified, and
  * (2) the version in the sccsid below is included in the report.
@@ -60,7 +60,7 @@ main(int ac, char **av)
 		lmbench_usage(ac, av, usage);
 	}
 
-	benchmp(initialize, benchmark, cleanup, 0, parallel, 
+	benchmp(initialize, benchmark, cleanup, 0, parallel,
 		warmup, repetitions, &state);
 
 	micro("AF_UNIX sock stream latency", get_n());

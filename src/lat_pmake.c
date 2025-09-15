@@ -3,7 +3,7 @@
  *
  * usage: lat_pipe [-P <parallelism>] [-W <warmup>] [-N <repetitions>] jobs usecs
  *
- * Copyright (c) 1994 Larry McVoy.  
+ * Copyright (c) 1994 Larry McVoy.
  * Copyright (c) 2002 Carl Staelin. Distributed under the FSF GPL with
  * additional restriction that results may published only if
  * (1) the benchmark is unmodified, and
@@ -27,7 +27,7 @@ typedef struct _state {
 	pid_t*	pids;
 } state_t;
 
-int 
+int
 main(int ac, char **av)
 {
 	state_t state;
@@ -69,7 +69,7 @@ main(int ac, char **av)
 		if (gettime() == 0) exit(1);
 		state.iterations = (iter_t)((usecs * get_n()) / gettime());
 
-		benchmp(setup, bench, NULL, 0, parallel, 
+		benchmp(setup, bench, NULL, 0, parallel,
 			warmup, repetitions, &state);
 		time = gettime();
 		time /= get_n();
@@ -93,17 +93,17 @@ setup(iter_t iterations, void* cookie)
 	handle_scheduler(benchmp_childid(), 0, state->jobs);
 }
 
-void 
+void
 bench(register iter_t iterations, void *cookie)
 {
 	int	i;
 	int	status;
 	state_t *state = (state_t *) cookie;
-	
+
 	state->pids = (pid_t*)malloc(state->jobs * sizeof(pid_t));
 
-	/* 
-	 * This design has one buglet --- we cannot detect if the 
+	/*
+	 * This design has one buglet --- we cannot detect if the
 	 * worker process died prematurely.  I.e., we don't have
 	 * a handshake step to collect "I finished correctly"
 	 * messages.
@@ -129,7 +129,7 @@ bench(register iter_t iterations, void *cookie)
 	}
 }
 
-void 
+void
 cleanup(register iter_t iterations, void *cookie)
 {
 	int	i;

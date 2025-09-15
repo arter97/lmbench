@@ -10,7 +10,7 @@
  * This code must be compiled using the optimizer!  If you don't
  * compile this using the optimizer, then many compilers don't
  * make good use of the registers and your inner loops end up
- * using stack variables, which is SLOW.  
+ * using stack variables, which is SLOW.
  *
  * Also, it is sensitive to other processor load.  When running
  * mhz with "rtprio" (real-time priority), I have never had mhz
@@ -21,14 +21,14 @@
  * will usually return a clock speed that is too high.
  *
  *******************************************************************
- * 
+ *
  * Constraints
  *
- * mhz.c is meant to be platform independent ANSI/C code, and it 
- * has as little platform dependent code as possible.  
+ * mhz.c is meant to be platform independent ANSI/C code, and it
+ * has as little platform dependent code as possible.
  *
- * This version of mhz is designed to eliminate the variable 
- * instruction counts used by different compilers on different 
+ * This version of mhz is designed to eliminate the variable
+ * instruction counts used by different compilers on different
  * architectures and instruction sets.  It is also structured to
  * be tightly interlocked so processors with super-scalar elements
  * or dynamic instructure reorder buffers cannot overlap the
@@ -47,9 +47,9 @@
  *
  * We can compute the CPU cycle time if we can get the compiler
  * to generate (at least) two instruction sequences inside loops
- * where the inner loop instruction counts are relatively prime.  
- * We have several different loops to increase the chance that 
- * two of them will be relatively prime on any given architecture.  
+ * where the inner loop instruction counts are relatively prime.
+ * We have several different loops to increase the chance that
+ * two of them will be relatively prime on any given architecture.
  *
  * This technique makes no assumptions about the cost of any single
  * instruction or the number of instructions used to implement a
@@ -73,9 +73,9 @@
  *	SHR		11.1ns (2 cycles/SHR)
  *	SHR;ADD		16.6ns (3 cycles/SHR;ADD)
  * so the greatest common divisor is 5.55ns and the clock speed
- * is 120Mhz.  Aside from extraneous variability added by poor 
- * benchmarking hygiene, this method should always work when we 
- * are able to get loops with cycle counts that are relatively 
+ * is 120Mhz.  Aside from extraneous variability added by poor
+ * benchmarking hygiene, this method should always work when we
+ * are able to get loops with cycle counts that are relatively
  * prime.
  *
  * Suppose we are unlucky, and we have our two loops do
@@ -86,7 +86,7 @@
  * then the greatest common divisor will be 11.1ns, so the clock
  * speed will appear to be 60Mhz.
  *
- * The loops provided so far should have at least two relatively 
+ * The loops provided so far should have at least two relatively
  * prime loops on nearly all architectures.
  *
  *******************************************************************
@@ -193,7 +193,7 @@ filter_data(double values[], int size)
 
 	free(d);
 
-	/* if the data point is inside the envelope of acceptable 
+	/* if the data point is inside the envelope of acceptable
 	 * results, then keep it, otherwise discard it
 	 */
 	for (i = 0, tests = 0; i < size; ++i)
@@ -307,7 +307,7 @@ cross_values(double values[], int size, double **cvalues, int *csize)
  * The time for an individual instruction is "b", while "a" should
  * be 0.  The trick is to figure out which guess is the right one!
  *
- * We assume that the gcd is the first value at which we have 
+ * We assume that the gcd is the first value at which we have
  * significantly improved regression fit (as measured by chi2).
  *
  * We increase the number of experimental points (and generate
@@ -317,7 +317,7 @@ cross_values(double values[], int size, double **cvalues, int *csize)
  * We want the regression line to go through the origin, so we
  * add an artificial point at (0,0) with a tiny standard error.
  */
-double 
+double
 gcd(double values[], int size)
 {
 /* assumption: shortest inner loop has no more than this many instructions */
@@ -336,7 +336,7 @@ gcd(double values[], int size)
 	y[n++] = 0.0;
 
 	for (count = 1; count < MAX_COUNT; ++count) {
-		/* 
+		/*
 		 * given the minimum loop has "count" instructions,
 		 * guess how many instructions each other loop contains
 		 */
@@ -379,14 +379,14 @@ compute_mhz(result_t *r)
 					data[n++] = r[j].v[r[j].N-1-i].u / (double)r[j].v[r[j].N-1-i].n;
 			if (n < 2
 			    || (n = filter_data(data, n)) < 2
-			    ||classes(data, n) < 2) 
+			    ||classes(data, n) < 2)
 				continue;
 			results[ntests++] = 1.0 / gcd(data, n);
 		}
 		mhz[i] = mode(results, ntests);
 	}
 	/* if the results agree within 1% or 1MHz, accept them */
-	if (ABS(mhz[0] - mhz[1]) / (double)mhz[0] <= 0.01 
+	if (ABS(mhz[0] - mhz[1]) / (double)mhz[0] <= 0.01
 	    || ABS(mhz[0] - mhz[1]) <= 1)
 		return mhz[0];
 
@@ -423,8 +423,8 @@ print_data(double mhz, result_t* data)
 	names[7] = name_8();
 	names[8] = name_9();
 
-	printf("/* \"%s\", \"%s\", \"%s\", %d, %.0f, %d, %f, %f */\n", 
-	       CPU_name, uname, email, speed, 
+	printf("/* \"%s\", \"%s\", \"%s\", %d, %.0f, %d, %f, %f */\n",
+	       CPU_name, uname, email, speed,
 	       mhz, get_enough(0), l_overhead(), t_overhead());
 	printf("result_t* data[] = { \n");
 	for (i = 0; i < NTESTS; ++i) {
@@ -500,7 +500,7 @@ main(int ac, char **av)
 	}
 
 	if (mhz > 0) {
-		printf("%d MHz, %.4f nanosec clock\n", 
+		printf("%d MHz, %.4f nanosec clock\n",
 		       mhz, 1000. / (double)mhz);
 	}
 	exit(0);

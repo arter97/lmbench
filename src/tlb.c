@@ -14,7 +14,7 @@ char	*id = "$Id$\n";
 
 #include "bench.h"
 
-int find_tlb(int start, int maxpages, int warmup, int repetitions, 
+int find_tlb(int start, int maxpages, int warmup, int repetitions,
 	     double* tlb_time, double* cache_time, struct mem_state* state);
 void compute_times(int pages, int warmup, int repetitions,
 	     double* tlb_time, double* cache_time, struct mem_state* state);
@@ -150,7 +150,7 @@ compute_times(int pages, int warmup, int repetitions,
 		}
 	}
 	tlb_cleanup(0, state);
-	
+
 	state->len = pages * state->line;
 	state->maxlen = pages * state->line;
 	mem_initialize(0, state);

@@ -110,7 +110,7 @@ benchmp_sigalrm(int signo)
 {
 	signal(SIGALRM, SIG_IGN);
 	kill(benchmp_sigalrm_pid, SIGTERM);
-	/* 
+	/*
 	 * Since we already waited a full timeout period for the child
 	 * to die, we only need to wait a little longer for subsequent
 	 * children to die.
@@ -118,28 +118,28 @@ benchmp_sigalrm(int signo)
 	benchmp_sigalrm_timeout = 1;
 }
 
-void 
-benchmp_child(benchmp_f initialize, 
+void
+benchmp_child(benchmp_f initialize,
 	      benchmp_f benchmark,
 	      benchmp_f cleanup,
 	      int childid,
-	      int response, 
-	      int start_signal, 
-	      int result_signal, 
+	      int response,
+	      int start_signal,
+	      int result_signal,
 	      int exit_signal,
-	      int parallel, 
+	      int parallel,
 	      iter_t iterations,
 	      int repetitions,
 	      int enough,
 	      void* cookie
 	      );
 void
-benchmp_parent(int response, 
-	       int start_signal, 
-	       int result_signal, 
-	       int exit_signal, 
+benchmp_parent(int response,
+	       int start_signal,
+	       int result_signal,
+	       int exit_signal,
 	       pid_t* pids,
-	       int parallel, 
+	       int parallel,
 	       iter_t iterations,
 	       int warmup,
 	       int repetitions,
@@ -149,11 +149,11 @@ benchmp_parent(int response,
 int
 sizeof_result(int repetitions);
 
-void 
-benchmp(benchmp_f initialize, 
+void
+benchmp(benchmp_f initialize,
 	benchmp_f benchmark,
 	benchmp_f cleanup,
-	int enough, 
+	int enough,
 	int parallel,
 	int warmup,
 	int repetitions,
@@ -187,7 +187,7 @@ benchmp(benchmp_f initialize,
 
 	if (parallel > 1) {
 		/* Compute the baseline performance */
-		benchmp(initialize, benchmark, cleanup, 
+		benchmp(initialize, benchmark, cleanup,
 			enough, 1, warmup, repetitions, cookie);
 
 		/* if we can't even do a single job, then give up */
@@ -245,13 +245,13 @@ benchmp(benchmp_f initialize,
 			close(result_signal[1]);
 			close(exit_signal[1]);
 			handle_scheduler(i, 0, 0);
-			benchmp_child(initialize, 
-				      benchmark, 
-				      cleanup, 
+			benchmp_child(initialize,
+				      benchmark,
+				      cleanup,
 				      i,
-				      response[1], 
-				      start_signal[0], 
-				      result_signal[0], 
+				      response[1],
+				      start_signal[0],
+				      result_signal[0],
 				      exit_signal[0],
 				      enough,
 				      iterations,
@@ -268,12 +268,12 @@ benchmp(benchmp_f initialize,
 	close(start_signal[0]);
 	close(result_signal[0]);
 	close(exit_signal[0]);
-	benchmp_parent(response[0], 
-		       start_signal[1], 
-		       result_signal[1], 
+	benchmp_parent(response[0],
+		       start_signal[1],
+		       result_signal[1],
 		       exit_signal[1],
 		       pids,
-		       parallel, 
+		       parallel,
 		       iterations,
 		       warmup,
 		       repetitions,
@@ -290,7 +290,7 @@ error_exit:
 	}
 
 cleanup_exit:
-	/* 
+	/*
 	 * Clean up and kill all children
 	 *
 	 * NOTE: the children themselves SHOULD exit, and
@@ -299,7 +299,7 @@ cleanup_exit:
 	 *   want to kill child processes when it appears
 	 *   that they will not die of their own accord.
 	 *   We wait twice the timing interval plus two seconds
-	 *   for children to die.  If they haven't died by 
+	 *   for children to die.  If they haven't died by
 	 *   that time, then we start killing them.
 	 */
 	benchmp_sigalrm_timeout = (int)((2 * enough)/1000000) + 2;
@@ -310,7 +310,7 @@ cleanup_exit:
 		/* wait timeout seconds for child to die, then kill it */
 		benchmp_sigalrm_pid = pids[i];
 		benchmp_sigalrm_handler = signal(SIGALRM, benchmp_sigalrm);
-		alarm(benchmp_sigalrm_timeout); 
+		alarm(benchmp_sigalrm_timeout);
 
 		waitpid(pids[i], NULL, 0);
 
@@ -325,12 +325,12 @@ cleanup_exit:
 }
 
 void
-benchmp_parent(	int response, 
-		int start_signal, 
-		int result_signal, 
+benchmp_parent(	int response,
+		int start_signal,
+		int result_signal,
 		int exit_signal,
 		pid_t* pids,
-		int parallel, 
+		int parallel,
 	        iter_t iterations,
 		int warmup,
 		int repetitions,
@@ -369,9 +369,9 @@ benchmp_parent(	int response,
 		timeout.tv_sec = 1;
 		timeout.tv_usec = 0;
 		select(response+1, &fds_read, NULL, &fds_error, &timeout);
-		if (benchmp_sigchld_received 
+		if (benchmp_sigchld_received
 		    || benchmp_sigterm_received
-		    || FD_ISSET(response, &fds_error)) 
+		    || FD_ISSET(response, &fds_error))
 		{
 #ifdef _DEBUG
 			fprintf(stderr, "benchmp_parent: ready, benchmp_sigchld_received=%d\n", benchmp_sigchld_received);
@@ -414,9 +414,9 @@ benchmp_parent(	int response,
 		timeout.tv_sec = 1;
 		timeout.tv_usec = 0;
 		select(response+1, &fds_read, NULL, &fds_error, &timeout);
-		if (benchmp_sigchld_received 
+		if (benchmp_sigchld_received
 		    || benchmp_sigterm_received
-		    || FD_ISSET(response, &fds_error)) 
+		    || FD_ISSET(response, &fds_error))
 		{
 #ifdef _DEBUG
 			fprintf(stderr, "benchmp_parent: done, benchmp_child_died=%d\n", benchmp_sigchld_received);
@@ -456,9 +456,9 @@ benchmp_parent(	int response,
 			timeout.tv_sec = 1;
 			timeout.tv_usec = 0;
 			select(response+1, &fds_read, NULL, &fds_error, &timeout);
-			if (benchmp_sigchld_received 
+			if (benchmp_sigchld_received
 			    || benchmp_sigterm_received
-			    || FD_ISSET(response, &fds_error)) 
+			    || FD_ISSET(response, &fds_error))
 			{
 #ifdef _DEBUG
 				fprintf(stderr, "benchmp_parent: results, benchmp_sigchld_received=%d\n", benchmp_sigchld_received);
@@ -478,14 +478,14 @@ benchmp_parent(	int response,
 			}
 		}
 		for (j = 0; j < results->N; ++j) {
-			insertsort(results->v[j].u, 
+			insertsort(results->v[j].u,
 				   results->v[j].n, merged_results);
 		}
 	}
 
 	/* we allow children to die now, without it causing an error */
 	signal(SIGCHLD, SIG_DFL);
-	
+
 	/* send 'exit' signals */
 	write(exit_signal, results, parallel * sizeof(char));
 
@@ -579,18 +579,18 @@ benchmp_getstate()
 	return ((void*)&_benchmp_child_state);
 }
 
-void 
-benchmp_child(benchmp_f initialize, 
+void
+benchmp_child(benchmp_f initialize,
 		benchmp_f benchmark,
 		benchmp_f cleanup,
 		int childid,
-		int response, 
-		int start_signal, 
-		int result_signal, 
+		int response,
+		int start_signal,
+		int result_signal,
 		int exit_signal,
 		int enough,
 	        iter_t iterations,
-		int parallel, 
+		int parallel,
 	        int repetitions,
 		void* cookie
 		)
@@ -639,7 +639,7 @@ benchmp_child(benchmp_f initialize,
 
 	if (initialize)
 		(*initialize)(0, cookie);
-	
+
 	if (benchmp_sigterm_handler != SIG_DFL) {
 		signal(SIGTERM, benchmp_sigterm_handler);
 	} else {
@@ -719,7 +719,7 @@ benchmp_interval(void* _state)
 				state->state = cooldown;
 			}
 		}
-		if (state->parallel == 1 
+		if (state->parallel == 1
 		    && (result < 0.99 * state->enough || result > 1.2 * state->enough)) {
 			if (result > 150.) {
 				double tmp = iterations / result;
@@ -745,7 +745,7 @@ benchmp_interval(void* _state)
 		FD_SET(state->result_signal, &fds);
 		select(state->result_signal+1, &fds, NULL, NULL, &timeout);
 		if (FD_ISSET(state->result_signal, &fds)) {
-			/* 
+			/*
 			 * At this point all children have stopped their
 			 * measurement loops, so we can block waiting for
 			 * the parent to tell us to send our results back.
@@ -1333,7 +1333,7 @@ l_overhead(void)
 	if (getenv("LOOP_O")) {
 		overhead = atof(getenv("LOOP_O"));
 	} else {
-		r_save = get_results(); N_save = get_n(); u_save = gettime(); 
+		r_save = get_results(); N_save = get_n(); u_save = gettime();
 		insertinit(&one);
 		insertinit(&two);
 		for (i = 0; i < TRIES; ++i) {
@@ -1349,17 +1349,17 @@ l_overhead(void)
 		 * u2 = (n2 * (overhead + 2 * work))
 		 * ==> overhead = 2. * u1 / n1 - u2 / n2
 		 */
-		set_results(&one); 
+		set_results(&one);
 		save_minimum();
 		overhead = 2. * gettime() / (double)get_n();
-		
-		set_results(&two); 
+
+		set_results(&two);
 		save_minimum();
 		overhead -= gettime() / (double)get_n();
-		
+
 		if (overhead < 0.) overhead = 0.;	/* Gag */
 
-		set_results(r_save); save_n(N_save); settime(u_save); 
+		set_results(r_save); save_n(N_save); settime(u_save);
 	}
 	return (overhead);
 }
@@ -1387,7 +1387,7 @@ t_overhead(void)
 		int		i;
 		result_t	r;
 
-		r_save = get_results(); N_save = get_n(); u_save = gettime(); 
+		r_save = get_results(); N_save = get_n(); u_save = gettime();
 		insertinit(&r);
 		for (i = 0; i < TRIES; ++i) {
 			BENCH_INNER(gettimeofday(&tv, 0), 0);
@@ -1397,7 +1397,7 @@ t_overhead(void)
 		save_minimum();
 		overhead = gettime() / get_n();
 
-		set_results(r_save); save_n(N_save); settime(u_save); 
+		set_results(r_save); save_n(N_save); settime(u_save);
 	}
 	return (overhead);
 }
@@ -1552,8 +1552,8 @@ compute_enough()
 			return (possibilities[i]);
 	}
 
-	/* 
-	 * if we can't find a timing interval that is sufficient, 
+	/*
+	 * if we can't find a timing interval that is sufficient,
 	 * then use SHORT as a default.
 	 */
 	return (SHORT);
@@ -1663,7 +1663,7 @@ permutation(int max, int scale)
 	fprintf(stderr, "permutation(%d): {", max);
 	for (i = 0; i < max; ++i) {
 	  fprintf(stderr, "%d", result[i]);
-	  if (i < max - 1) 
+	  if (i < max - 1)
 	    fprintf(stderr, ",");
 	}
 	fprintf(stderr, "}\n");

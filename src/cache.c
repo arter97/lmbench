@@ -27,20 +27,20 @@ struct cache_results {
 };
 
 int	find_cache(int start, int n, struct cache_results* p);
-int	collect_data(int start, int line, int maxlen, 
+int	collect_data(int start, int line, int maxlen,
 		     int repetitions, struct cache_results** pdata);
-void	search(int left, int right, int repetitions, 
+void	search(int left, int right, int repetitions,
 	       struct mem_state* state, struct cache_results* p);
-int	collect_sample(int repetitions, struct mem_state* state, 
+int	collect_sample(int repetitions, struct mem_state* state,
 			struct cache_results* p);
-double	measure(int size, int repetitions, 
+double	measure(int size, int repetitions,
 		double* variation, struct mem_state* state);
-double	remove_chunk(int i, int chunk, int npages, size_t* pages, 
+double	remove_chunk(int i, int chunk, int npages, size_t* pages,
 		       int len, int repetitions, struct mem_state* state);
-int	test_chunk(int i, int chunk, int npages, size_t* pages, int len, 
+int	test_chunk(int i, int chunk, int npages, size_t* pages, int len,
 		   double *baseline, double chunk_baseline,
 		   int repetitions, struct mem_state* state);
-int	fixup_chunk(int i, int chunk, int npages, size_t* pages, int len, 
+int	fixup_chunk(int i, int chunk, int npages, size_t* pages, int len,
 		    double *baseline, double chunk_baseline,
 		    int repetitions, struct mem_state* state);
 void	check_memory(int size, struct mem_state* state);
@@ -142,18 +142,18 @@ main(int ac, char **av)
 	levels = (int*)malloc(n * sizeof(int));
 	bzero(levels, n * sizeof(int));
 
-	for (start = 0, prev = 0, level = 0; 
-	     (i = find_cache(start, n, r)) >= 0; 
-	     ++level, start = i + 1, prev = i) 
+	for (start = 0, prev = 0, level = 0;
+	     (i = find_cache(start, n, r)) >= 0;
+	     ++level, start = i + 1, prev = i)
 	{
-		/* 
+		/*
 		 * performance is not greatly improved over main memory,
 		 * so it is likely not a cache boundary
 		 */
 		if (r[i].latency / r[n-1].latency > 0.5) break;
 
-		/* 
-		 * is cache boundary "legal"? (e.g. 2^N or 1.5*2^N) 
+		/*
+		 * is cache boundary "legal"? (e.g. 2^N or 1.5*2^N)
 		 * cache sizes are "never" 1.25*2^N or 1.75*2^N
 		 */
 		for (c = r[i].len; c > 0x7; c >>= 1)
@@ -191,10 +191,10 @@ main(int ac, char **av)
 		}
 
 		/* Compute memory parallelism for cache */
-		maxpar = par_mem(r[levels[i]-1].len, warmup, 
+		maxpar = par_mem(r[levels[i]-1].len, warmup,
 				 repetitions, &state);
 
-		fprintf(stderr, 
+		fprintf(stderr,
 		    "L%d cache: %d bytes %.2f nanoseconds %d linesize %.2f parallelism\n",
 		    i+1, r[levels[i]].len, r[min].latency, line, maxpar);
 	}
@@ -238,7 +238,7 @@ find_cache(int start, int n, struct cache_results* p)
 }
 
 int
-collect_data(int start, int line, int maxlen, 
+collect_data(int start, int line, int maxlen,
 	     int repetitions, struct cache_results** pdata)
 {
 	int	i;
@@ -298,28 +298,28 @@ collect_data(int start, int line, int maxlen,
 		state.pages[i] = i * state.pagesize;
 
 	p[0].latency = measure(p[0].len, repetitions, &p[0].variation, &state);
-	p[samples-1].latency = measure(p[samples-1].len, repetitions, 
+	p[samples-1].latency = measure(p[samples-1].len, repetitions,
 				       &p[samples-1].variation, &state);
 	while (p[samples-1].latency <= 0.0) {
-		p[samples-1].latency = measure(p[samples-1].len, 
-					       repetitions, 
-					       &p[samples-1].variation, 
+		p[samples-1].latency = measure(p[samples-1].len,
+					       repetitions,
+					       &p[samples-1].variation,
 					       &state);
 		--samples;
 	}
 	search(0, samples - 1, repetitions, &state, p);
 
 	/*
-	fprintf(stderr, "%10.10s %8.8s %8.8s %8.8s %8.8s %5.5s %5.5s\n", 
-		"mem size", "latency", "variation", "ratio", "slope", 
+	fprintf(stderr, "%10.10s %8.8s %8.8s %8.8s %8.8s %5.5s %5.5s\n",
+		"mem size", "latency", "variation", "ratio", "slope",
 		"line", "mline");
 	for (idx = 0; idx < samples; ++idx) {
 		if (p[idx].latency < 0.) continue;
-		fprintf(stderr, 
-			"%10.6f %8.3f %8.3f %8.3f %8.3f %4d %4d\n", 
-			p[idx].len / (1000. * 1000.), 
-			p[idx].latency, 
-			p[idx].variation, 
+		fprintf(stderr,
+			"%10.6f %8.3f %8.3f %8.3f %8.3f %4d %4d\n",
+			p[idx].len / (1000. * 1000.),
+			p[idx].latency,
+			p[idx].variation,
 			p[idx].ratio,
 			p[idx].slope,
 			p[idx].line,
@@ -332,7 +332,7 @@ collect_data(int start, int line, int maxlen,
 }
 
 void
-search(int left, int right, int repetitions, 
+search(int left, int right, int repetitions,
        struct mem_state* state, struct cache_results* p)
 {
 	int	middle = left + (right - left) / 2;
@@ -360,7 +360,7 @@ search(int left, int right, int repetitions,
 }
 
 int
-collect_sample(int repetitions, struct mem_state* state, 
+collect_sample(int repetitions, struct mem_state* state,
 	       struct cache_results* p)
 {
 	int	i, modified, npages;
@@ -368,11 +368,11 @@ collect_sample(int repetitions, struct mem_state* state,
 
 	npages = (p->len + getpagesize() - 1) / getpagesize();
         baseline = measure(p->len, repetitions, &p->variation, state);
-	
+
 	if (npages > 1) {
 		for (i = 0, modified = 1; i < 8 && modified; ++i) {
-			modified = test_chunk(0, npages, npages, 
-					      state->pages, p->len, 
+			modified = test_chunk(0, npages, npages,
+					      state->pages, p->len,
 					      &baseline, 0.0,
 					      repetitions, state);
 		}
@@ -383,7 +383,7 @@ collect_sample(int repetitions, struct mem_state* state,
 }
 
 double
-measure(int size, int repetitions, 
+measure(int size, int repetitions,
 	double* variation, struct mem_state* state)
 {
 	int	i, j, npages, nlines;
@@ -403,18 +403,18 @@ measure(int size, int repetitions,
 	r = (result_t*)malloc(sizeof_result(repetitions));
 	insertinit(r);
 
-	/* 
+	/*
 	 * assumes that you have used mem_initialize() to setup the memory
 	 */
 	p = state->base;
 	for (i = 0; i < npages - 1; ++i) {
 		for (j = 0; j < state->nwords; ++j) {
-			*(char**)(p + pages[i] + state->lines[state->nlines - 1] + state->words[j]) = 
+			*(char**)(p + pages[i] + state->lines[state->nlines - 1] + state->words[j]) =
 			p + pages[i+1] + state->lines[0] + state->words[j];
 		}
 	}
 	for (j = 0; j < state->nwords; ++j) {
-		*(char**)(p + pages[npages - 1] + state->lines[nlines - 1] + state->words[j]) = 
+		*(char**)(p + pages[npages - 1] + state->lines[nlines - 1] + state->words[j]) =
 			p + pages[0] + state->lines[0] + state->words[(j+1)%state->nwords];
 	}
 
@@ -447,7 +447,7 @@ measure(int size, int repetitions,
 
 	if (nlines < state->nlines) {
 		for (j = 0; j < state->nwords; ++j) {
-			*(char**)(p + pages[npages - 1] + state->lines[nlines - 1] + state->words[j]) = 
+			*(char**)(p + pages[npages - 1] + state->lines[nlines - 1] + state->words[j]) =
 				p + pages[npages - 1] + state->lines[nlines] + state->words[j];
 		}
 	}
@@ -460,7 +460,7 @@ measure(int size, int repetitions,
 
 
 double
-remove_chunk(int i, int chunk, int npages, size_t* pages, 
+remove_chunk(int i, int chunk, int npages, size_t* pages,
 	       int len, int repetitions, struct mem_state* state)
 {
 	int	n, j;
@@ -481,12 +481,12 @@ remove_chunk(int i, int chunk, int npages, size_t* pages,
 			pages[npages-1-j] = n;
 		}
 	}
-	
+
 	return t;
 }
 
 int
-test_chunk(int i, int chunk, int npages, size_t* pages, int len, 
+test_chunk(int i, int chunk, int npages, size_t* pages, int len,
 	   double *baseline, double chunk_baseline,
 	   int repetitions, struct mem_state* state)
 {
@@ -496,7 +496,7 @@ test_chunk(int i, int chunk, int npages, size_t* pages, int len,
 	double	t, tt, nodiff_chunk_baseline;
 
 	if (chunk <= 20 && chunk < npages) {
-		return fixup_chunk(i, chunk, npages, pages, len, baseline, 
+		return fixup_chunk(i, chunk, npages, pages, len, baseline,
 				   chunk_baseline, repetitions, state);
 	}
 
@@ -505,7 +505,7 @@ test_chunk(int i, int chunk, int npages, size_t* pages, int len,
 	for (j = i, k = 0; j < i + chunk; j+=subchunk, k++) {
 		if (j + subchunk > i + chunk) subchunk = i + chunk - j;
 
-		t = remove_chunk(j, subchunk, npages, pages, 
+		t = remove_chunk(j, subchunk, npages, pages,
 				 len, repetitions, state);
 
 		/*
@@ -515,7 +515,7 @@ test_chunk(int i, int chunk, int npages, size_t* pages, int len,
 		if (t >= 0.99 * *baseline) continue;
 		if (t >= 0.999 * nodiff_chunk_baseline) continue;
 
-		tt = remove_chunk(j, subchunk, npages, pages, 
+		tt = remove_chunk(j, subchunk, npages, pages,
 				  len, repetitions, state);
 
 		if (tt > t) t = tt;
@@ -540,12 +540,12 @@ test_chunk(int i, int chunk, int npages, size_t* pages, int len,
  * that has pages that are suspected of colliding with other
  * pages.
  *
- * The algorithm is to remove all the pages, and then 
+ * The algorithm is to remove all the pages, and then
  * slowly add back pages; attempting to add pages with
  * minimal cost.
  */
 int
-fixup_chunk(int i, int chunk, int npages, size_t* pages, int len, 
+fixup_chunk(int i, int chunk, int npages, size_t* pages, int len,
 	    double *baseline, double chunk_baseline,
 	    int repetitions, struct mem_state* state)
 {
@@ -579,18 +579,18 @@ fixup_chunk(int i, int chunk, int npages, size_t* pages, int len,
 
 	if (available_index >= nsparepages) available_index = 0;
 
-	/* 
+	/*
 	 * first try to identify which pages we can definitely keep
 	 */
 	for (j = 0, k = chunk; j < k; ) {
 
-		t = measure((npages - chunk + j + 1) * getpagesize(), 
+		t = measure((npages - chunk + j + 1) * getpagesize(),
 			    repetitions, &var, state);
 
 		if (0.995 * t <= chunk_baseline) {
 			latencies[j] = t;
 			++j;	/* keep this page */
-		} else {	
+		} else {
 			--k;	/* this page is probably no good */
 			latencies[k] = t;
 			SWAP(pages[npages - chunk + j], pages[npages - chunk + k]);
@@ -607,7 +607,7 @@ fixup_chunk(int i, int chunk, int npages, size_t* pages, int len,
 
 	if (chunk >= npages && j < chunk / 2) {
 		j = chunk / 2;
-		t = measure((npages - chunk + j + 1) * getpagesize(), 
+		t = measure((npages - chunk + j + 1) * getpagesize(),
 			    repetitions, &var, state);
 		chunk_baseline = t;
 	}
@@ -620,7 +620,7 @@ fixup_chunk(int i, int chunk, int npages, size_t* pages, int len,
 		if (j == chunk - 1 && len % getpagesize()) {
 			subset_len = len;
 		}
-		
+
 		SWAP(pages[original], pageset[substitute]);
 		t = measure(subset_len, repetitions, &var, state);
 		SWAP(pages[original], pageset[substitute]);
@@ -631,7 +631,7 @@ fixup_chunk(int i, int chunk, int npages, size_t* pages, int len,
 		if (t < latencies[chunk - 1]) {
 			latencies[chunk - 1] = t;
 			SWAP(pages[npages - 1], pageset[substitute]);
-			pagesort(chunk - j, 
+			pagesort(chunk - j,
 				 &pages[npages - chunk + j], &latencies[j]);
 		}
 		if (0.995 * latencies[j] <= chunk_baseline) {
@@ -639,7 +639,7 @@ fixup_chunk(int i, int chunk, int npages, size_t* pages, int len,
 			++swapped;
 		}
 	}
-				
+
 	available_index = (k + available_index) % (nsparepages - 1);
 
 	/* measure new baseline, in case we didn't manage to optimally
@@ -710,8 +710,8 @@ check_memory(int size, struct mem_state* state)
 				if (page == state->pages[j]) break;
 			}
 			if (j == first_page) {
-				fprintf(stderr, 
-					"check_memory: bad memory reference for size %d\n", 
+				fprintf(stderr,
+					"check_memory: bad memory reference for size %d\n",
 					size);
 			}
 		}
@@ -740,7 +740,7 @@ pagesort(int n, size_t* pages, double* latencies)
 	for (i = 0; i < n - 1; ++i) {
 		for (j = i + 1; j < n; ++j) {
 			if (latencies[i] > latencies[j]) {
-				t = latencies[i]; 
+				t = latencies[i];
 				latencies[i] = latencies[j];
 				latencies[j] = t;
 				SWAP(pages[i], pages[j]);

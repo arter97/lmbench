@@ -80,7 +80,7 @@ main(int ac, char **av)
 	}
 
 	state.server = av[optind];
-	benchmp(init, doclient, cleanup, MEDIUM, parallel, 
+	benchmp(init, doclient, cleanup, MEDIUM, parallel,
 		warmup, repetitions, &state);
 
 	sprintf(buf, "TCP latency using %s", state.server);

@@ -150,7 +150,7 @@ char	*http_time()
  * Output: Tue, 28 Jan 97 01:20:30 GMT
  *
  * Since it costs 150 usecs or so to do this on an Indy, it may pay to
- * optimize this.  
+ * optimize this.
  */
 char	*
 date(time_t	*tt)
@@ -199,7 +199,7 @@ source(int sock)
 		return (-1);
 	}
 	buf[n] = 0;
-	if (dflg) printf("%.*s\n", n, buf); 
+	if (dflg) printf("%.*s\n", n, buf);
 	if (zflg) {
 		return (0);
 	}
@@ -213,7 +213,7 @@ source(int sock)
 	for (s = buf; *s && *s != '\r' && *s != '\n'; s++)
 		;
 	*s = 0;
-	for (s = name; *s && *s != ' '; s++) 
+	for (s = name; *s && *s != ' '; s++)
 		;
 	*s = 0;
 	if (lflg) strncpy(file, name, sizeof(file));
@@ -269,8 +269,8 @@ isdir(char *name)
 <H1>Index of /pub/Linux</H1>
 <PRE><IMG SRC="/icons/blank.gif" ALT="     "> Name                   Last modified     Size  Description
 <HR>
-<IMG SRC="/icons/unknown.gif" ALT="[   ]"> <A HREF="!INDEX">!INDEX</A>                 19-Sep-97 03:20     3k  
-<IMG SRC="/icons/text.gif" ALT="[TXT]"> <A HREF="!INDEX.html">!INDEX.html</A>            19-Sep-97 03:20     6k  
+<IMG SRC="/icons/unknown.gif" ALT="[   ]"> <A HREF="!INDEX">!INDEX</A>                 19-Sep-97 03:20     3k
+<IMG SRC="/icons/text.gif" ALT="[TXT]"> <A HREF="!INDEX.html">!INDEX.html</A>            19-Sep-97 03:20     6k
 #endif
 
 void

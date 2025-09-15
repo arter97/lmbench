@@ -106,7 +106,7 @@ main(int ac, char **av)
 
 	state.server = av[optind];
 	state.msize = msize;
-	benchmp(init, doit, cleanup, SHORT, parallel, 
+	benchmp(init, doit, cleanup, SHORT, parallel,
 		warmup, repetitions, &state);
 	sprintf(buf, "UDP latency using %s", state.server);
 	micro(buf, get_n());
@@ -123,7 +123,7 @@ init(iter_t iterations, void* cookie)
 	state->sock = udp_connect(state->server, UDP_XACT, SOCKOPT_NONE);
 	state->seq = 0;
 	state->buf = (char*)malloc(state->msize);
-	
+
 	signal(SIGALRM, timeout);
 	alarm(15);
 }
@@ -184,7 +184,7 @@ server_main()
 	while (1) {
 		int nbytes;
 		namelen = sizeof(it);
-		if ((nbytes = recvfrom(sock, (void*)buf, MAX_MSIZE, 0, 
+		if ((nbytes = recvfrom(sock, (void*)buf, MAX_MSIZE, 0,
 		    (struct sockaddr*)&it, &namelen)) < 0) {
 			fprintf(stderr, "lat_udp server: recvfrom: got wrong size\n");
 			exit(9);
@@ -198,7 +198,7 @@ server_main()
 			seq = sent;
 		}
 		*(int*)buf = htonl(seq);
-		if (sendto(sock, (void*)buf, nbytes, 0, 
+		if (sendto(sock, (void*)buf, nbytes, 0,
 		    (struct sockaddr*)&it, sizeof(it)) < 0) {
 			perror("lat_udp sendto");
 			exit(9);

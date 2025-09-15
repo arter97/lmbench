@@ -55,7 +55,7 @@ double	uint64_bootstrap_stderr(uint64 *values, int size, uint64_stat f);
 double	double_bootstrap_stderr(double *values, int size, double_stat f);
 
 void	regression(double *x, double *y, double *sig, int n,
-		   double *a, double *b, double *sig_a, double *sig_b, 
+		   double *a, double *b, double *sig_a, double *sig_b,
 		   double *chi2);
 
 #endif /* _STATS_H */

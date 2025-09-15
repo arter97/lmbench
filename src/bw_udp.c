@@ -46,7 +46,7 @@ main(int ac, char **av)
 	char	*usage = "-s\n OR [-m <message size>] [-W <warmup>] [-N <repetitions>] server [size]\n OR -S serverhost\n";
 	int	c;
 	uint64	usecs;
-	
+
 	state.msize = 0;
 	state.move = 10*1024*1024;
 
@@ -183,7 +183,7 @@ server_main()
 
 	while (1) {
 		namelen = sizeof(it);
-		if (recvfrom(sock, (void*)buf, 2 * sizeof(long), 0, 
+		if (recvfrom(sock, (void*)buf, 2 * sizeof(long), 0,
 		    (struct sockaddr*)&it, &namelen) < 0) {
 			fprintf(stderr, "bw_udp server: recvfrom: got wrong size\n");
 			exit(9);
@@ -191,7 +191,7 @@ server_main()
 		nbytes = ntohl(*(long*)buf);
 		msize = ntohl(*((long*)buf + 1));
 		while (nbytes > 0) {
-			if (sendto(sock, (void*)buf, msize, 0, 
+			if (sendto(sock, (void*)buf, msize, 0,
 				   (struct sockaddr*)&it, sizeof(it)) < 0) {
 				perror("bw_udp sendto");
 				exit(9);

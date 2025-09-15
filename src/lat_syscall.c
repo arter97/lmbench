@@ -129,18 +129,18 @@ main(int ac, char **av)
 	if (optind != ac - 1 && optind != ac - 2 ) {
 		lmbench_usage(ac, av, usage);
 	}
-	
+
 	state.file = FNAME;
-	if (optind == ac - 2) 
+	if (optind == ac - 2)
 		state.file = av[optind + 1];
 
 	if (!strcmp("null", av[optind])) {
-		benchmp(NULL, do_getppid, NULL, 0, parallel, 
+		benchmp(NULL, do_getppid, NULL, 0, parallel,
 			warmup, repetitions, &state);
 		micro("Simple syscall", get_n());
 	} else if (!strcmp("write", av[optind])) {
 		state.fd = open("/dev/null", 1);
-		benchmp(NULL, do_write, NULL, 0, parallel, 
+		benchmp(NULL, do_write, NULL, 0, parallel,
 			warmup, repetitions, &state);
 		micro("Simple write", get_n());
 		close(state.fd);
@@ -150,22 +150,22 @@ main(int ac, char **av)
 			fprintf(stderr, "Simple read: -1\n");
 			return(1);
 		}
-		benchmp(NULL, do_read, NULL, 0, parallel, 
+		benchmp(NULL, do_read, NULL, 0, parallel,
 			warmup, repetitions, &state);
 		micro("Simple read", get_n());
 		close(state.fd);
 	} else if (!strcmp("stat", av[optind])) {
-		benchmp(NULL, do_stat, NULL, 0, parallel, 
+		benchmp(NULL, do_stat, NULL, 0, parallel,
 			warmup, repetitions, &state);
 		micro("Simple stat", get_n());
 	} else if (!strcmp("fstat", av[optind])) {
 		state.fd = open(state.file, 0);
-		benchmp(NULL, do_fstat, NULL, 0, parallel, 
+		benchmp(NULL, do_fstat, NULL, 0, parallel,
 			warmup, repetitions, &state);
 		micro("Simple fstat", get_n());
 		close(state.fd);
 	} else if (!strcmp("open", av[optind])) {
-		benchmp(NULL, do_openclose, NULL, 0, parallel, 
+		benchmp(NULL, do_openclose, NULL, 0, parallel,
 			warmup, repetitions, &state);
 		micro("Simple open/close", get_n());
 	} else {

@@ -3,7 +3,7 @@
  *
  * Three programs in one -
  *	server usage:	bw_tcp -s
- *	client usage:	bw_tcp [-m <message size>] [-M <total bytes>] [-P <parallelism>] [-W <warmup>] [-N <repetitions>] hostname 
+ *	client usage:	bw_tcp [-m <message size>] [-M <total bytes>] [-P <parallelism>] [-W <warmup>] [-N <repetitions>] hostname
  *	shutdown:	bw_tcp -hostname
  *
  * Copyright (c) 2000 Carl Staelin.
@@ -43,7 +43,7 @@ main(int ac, char **av)
 	state_t state;
 	char	*usage = "-s\n OR [-m <message size>] [-M <bytes to move>] [-P <parallelism>] [-W <warmup>] [-N <repetitions>] server\n OR -S serverhost\n";
 	int	c;
-	
+
 	state.msize = 0;
 	state.move = 0;
 
@@ -105,12 +105,12 @@ main(int ac, char **av)
 	}
 
 	/*
-	 * Default is to warmup the connection for seven seconds, 
+	 * Default is to warmup the connection for seven seconds,
 	 * then measure performance over each timing interval.
-	 * This minimizes the effect of opening and initializing TCP 
+	 * This minimizes the effect of opening and initializing TCP
 	 * connections.
 	 */
-	benchmp(initialize, loop_transfer, cleanup, 
+	benchmp(initialize, loop_transfer, cleanup,
 		0, parallel, warmup, repetitions, &state);
 	if (gettime() > 0) {
 		fprintf(stderr, "%.6f ", state.msize / (1000. * 1000.));
@@ -146,7 +146,7 @@ initialize(iter_t iterations, void *cookie)
 	}
 }
 
-void 
+void
 loop_transfer(iter_t iterations, void *cookie)
 {
 	int	c;
@@ -205,7 +205,7 @@ server_main()
 }
 
 /*
- * Read the message size.  Keep transferring 
+ * Read the message size.  Keep transferring
  * data in message-size sized packets until
  * the socket goes away.
  */

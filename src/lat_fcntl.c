@@ -94,7 +94,7 @@ procB(struct _state *state)
 	}
 }
 
-void 
+void
 initialize(iter_t iterations, void* cookie)
 {
 	char	buf[10000];
@@ -156,7 +156,7 @@ void
 benchmark(iter_t iterations, void* cookie)
 {
 	struct _state* state = (struct _state*)cookie;
-	
+
 	while (iterations-- > 0) {
 		procA(state);
 	}
@@ -216,7 +216,7 @@ main(int ac, char **av)
 
 	state.pid = 0;
 
-	benchmp(initialize, benchmark, cleanup, 0, parallel, 
+	benchmp(initialize, benchmark, cleanup, 0, parallel,
 		warmup, repetitions, &state);
 	micro("Fcntl lock latency", 2 * get_n());
 

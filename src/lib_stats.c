@@ -439,7 +439,7 @@ double	double_kurtosis(double *values, int size)
  */
 
 /*
- * return the bootstrap estimation of the standard error 
+ * return the bootstrap estimation of the standard error
  * of an array of ints
  */
 double	int_bootstrap_stderr(int *values, int size, int_stat f)
@@ -458,8 +458,8 @@ double	int_bootstrap_stderr(int *values, int size, int_stat f)
 		s_sum += s[i];	/* CHS: worry about overflow */
 	}
 	s_sum /= (double)BOOTSTRAP_COUNT;
-	
-	for (i = 0; i < BOOTSTRAP_COUNT; ++i) 
+
+	for (i = 0; i < BOOTSTRAP_COUNT; ++i)
 		sum += (s[i] - s_sum) * (s[i] - s_sum);
 
 	sum /= (double)(BOOTSTRAP_COUNT - 1);
@@ -471,7 +471,7 @@ double	int_bootstrap_stderr(int *values, int size, int_stat f)
 }
 
 /*
- * return the bootstrap estimation of the standard error 
+ * return the bootstrap estimation of the standard error
  * of an array of uint64s
  */
 double	uint64_bootstrap_stderr(uint64 *values, int size, uint64_stat f)
@@ -484,14 +484,14 @@ double	uint64_bootstrap_stderr(uint64 *values, int size, uint64_stat f)
 
 	/* generate the stderr for each of the bootstrap samples */
 	for (i = 0, s_sum = 0.0; i < BOOTSTRAP_COUNT; ++i) {
-		for (j = 0; j < size; ++j) 
+		for (j = 0; j < size; ++j)
 			samples[j] = values[rand() % size];
 		s[i] = (double)(*f)(samples, size);
 		s_sum += s[i];	/* CHS: worry about overflow */
 	}
 	s_sum /= (double)BOOTSTRAP_COUNT;
-	
-	for (i = 0, sum = 0.0; i < BOOTSTRAP_COUNT; ++i) 
+
+	for (i = 0, sum = 0.0; i < BOOTSTRAP_COUNT; ++i)
 		sum += (s[i] - s_sum) * (s[i] - s_sum);
 
 	free(samples);
@@ -501,7 +501,7 @@ double	uint64_bootstrap_stderr(uint64 *values, int size, uint64_stat f)
 }
 
 /*
- * return the bootstrap estimation of the standard error 
+ * return the bootstrap estimation of the standard error
  * of an array of doubles
  */
 double	double_bootstrap_stderr(double *values, int size, double_stat f)
@@ -514,14 +514,14 @@ double	double_bootstrap_stderr(double *values, int size, double_stat f)
 
 	/* generate the stderr for each of the bootstrap samples */
 	for (i = 0; i < BOOTSTRAP_COUNT; ++i) {
-		for (j = 0; j < size; ++j) 
+		for (j = 0; j < size; ++j)
 			samples[j] = values[rand() % size];
 		s[i] = (*f)(samples, size);
 		s_sum += (double)s[i];	/* CHS: worry about overflow */
 	}
 	s_sum /= (double)BOOTSTRAP_COUNT;
-	
-	for (i = 0; i < BOOTSTRAP_COUNT; ++i) 
+
+	for (i = 0; i < BOOTSTRAP_COUNT; ++i)
 		sum += (s[i] - s_sum) * (s[i] - s_sum);
 
 	sum /= (double)(BOOTSTRAP_COUNT - 1);
@@ -535,10 +535,10 @@ double	double_bootstrap_stderr(double *values, int size, double_stat f)
 /*
  * regression(x, y, sig, n, a, b, sig_a, sig_b, chi2)
  *
- * This routine is derived from equations in "Numerical Recipes in C" 
+ * This routine is derived from equations in "Numerical Recipes in C"
  * (second edition) by Press, et. al.,  pages 661-665.
  *
- * compute the linear regression y = a + bx for (x,y), where y[i] has 
+ * compute the linear regression y = a + bx for (x,y), where y[i] has
  * standard deviation sig[i].
  *
  * returns the coefficients a and b, along with an estimation of their
@@ -549,7 +549,7 @@ double	double_bootstrap_stderr(double *values, int size, double_stat f)
 
 void
 regression(double *x, double *y, double *sig, int n,
-	   double *a, double *b, double *sig_a, double *sig_b, 
+	   double *a, double *b, double *sig_a, double *sig_b,
 	   double *chi2)
 {
 	int	i;
@@ -567,7 +567,7 @@ regression(double *x, double *y, double *sig, int n,
 	*b = 0.0;
 	Sx_S = Sx / S;
 	for (i = 0; i < n; ++i) {
-		/* 
+		/*
 		 * Equation 15.2.15 for t
 		 * Equation 15.2.16 for Stt
 		 * Equation 15.2.17 for b, do summation portion of equation

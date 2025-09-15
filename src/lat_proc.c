@@ -43,7 +43,7 @@ cleanup(iter_t iterations, void* cookie)
 		child_pid = 0;
 	}
 }
-	
+
 int
 main(int ac, char **av)
 {
@@ -76,11 +76,11 @@ main(int ac, char **av)
 	}
 
 	if (!strcmp("procedure", av[optind])) {
-		benchmp(NULL, do_procedure, cleanup, 0, parallel, 
+		benchmp(NULL, do_procedure, cleanup, 0, parallel,
 			warmup, repetitions, &ac);
 		micro("Procedure call", get_n());
 	} else if (!strcmp("fork", av[optind])) {
-		benchmp(NULL, do_fork, cleanup, 0, parallel, 
+		benchmp(NULL, do_fork, cleanup, 0, parallel,
 			warmup, repetitions, NULL);
 		micro(STATIC_PREFIX "Process fork+exit", get_n());
 	} else if (!strcmp("exec", av[optind])) {
@@ -97,7 +97,7 @@ main(int ac, char **av)
 	return(0);
 }
 
-void 
+void
 do_shell(iter_t iterations, void* cookie)
 {
 	signal(SIGCHLD, SIG_DFL);
@@ -107,7 +107,7 @@ do_shell(iter_t iterations, void* cookie)
 		case -1:
 			perror("fork");
 			exit(1);
-	    
+
 		case 0:	/* child */
 			handle_scheduler(benchmp_childid(), 1, 1);
 			close(1);
@@ -121,7 +121,7 @@ do_shell(iter_t iterations, void* cookie)
 	}
 }
 
-void 
+void
 do_forkexec(iter_t iterations, void* cookie)
 {
 	char	*nav[2];
@@ -148,8 +148,8 @@ do_forkexec(iter_t iterations, void* cookie)
 		child_pid = 0;
 	}
 }
-	
-void 
+
+void
 do_fork(iter_t iterations, void* cookie)
 {
 	signal(SIGCHLD, SIG_DFL);
@@ -159,19 +159,19 @@ do_fork(iter_t iterations, void* cookie)
 		case -1:
 			perror("fork");
 			exit(1);
-	
+
 		case 0:	/* child */
 			handle_scheduler(benchmp_childid(), 1, 1);
 			exit(1);
-	
+
 		default:
 			waitpid(child_pid, NULL,0);
 		}
 		child_pid = 0;
 	}
 }
-	
-void 
+
+void
 do_procedure(iter_t iterations, void* cookie)
 {
 	int r = *(int *) cookie;

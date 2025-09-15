@@ -46,7 +46,7 @@ main(int ac, char **av)
 	char	buf[256];
 	int	c;
 	char	*usage = "[-r] [-C] [-P <parallelism>] [-W <warmup>] [-N <repetitions>] size file\n";
-	
+
 
 	state.random = 0;
 	state.clone = 0;
@@ -85,7 +85,7 @@ main(int ac, char **av)
 	}
 	state.name = av[optind+1];
 
-	benchmp(init, domapping, cleanup, 0, parallel, 
+	benchmp(init, domapping, cleanup, 0, parallel,
 		warmup, repetitions, &state);
 
 	if (gettime() > 0) {
@@ -98,7 +98,7 @@ void
 init(iter_t iterations, void* cookie)
 {
 	state_t *state = (state_t *) cookie;
-	
+
 	if (iterations) return;
 
 	if (state->clone) {

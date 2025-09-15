@@ -31,7 +31,7 @@ void	cleanup(iter_t iterations, void* cookie);
 #define MAX_LOAD_PARALLELISM 16
 
 double
-max_parallelism(benchmp_f* benchmarks, 
+max_parallelism(benchmp_f* benchmarks,
 		int warmup, int repetitions, void* cookie)
 {
 	int		i, j, k;
@@ -41,7 +41,7 @@ max_parallelism(benchmp_f* benchmarks,
 	max_load_parallelism = 1.;
 
 	for (i = 0; i < MAX_LOAD_PARALLELISM; ++i) {
-		benchmp(initialize, benchmarks[i], cleanup, 
+		benchmp(initialize, benchmarks[i], cleanup,
 			0, 1, warmup, repetitions, cookie);
 		save_minimum();
 
@@ -141,7 +141,7 @@ void benchmark##_##N(iter_t iterations, void *cookie) 			\
 #define BODY(N)		r##N ^= s##N; s##N ^= r##N; r##N |= s##N;
 #define DECLARE(N)	register int r##N, s##N;
 #define INIT(N)		r##N = state->int_data[N] + 1; s##N = (N+1) + r##N;
-#define PREAMBLE(N)	
+#define PREAMBLE(N)
 #define SAVE(N)		use_int((int)r##N);
 PARALLEL_BENCHMARKS(integer_bit)
 #undef	BODY
@@ -183,7 +183,7 @@ PARALLEL_BENCHMARKS(integer_mul)
 #define DECLARE(N)	register int r##N, s##N;
 #define INIT(N)		r##N = state->int_data[N] - N + 1 + 36; \
 			s##N = (r##N + 1) << 20;
-#define PREAMBLE(N)	
+#define PREAMBLE(N)
 #define SAVE(N)		use_int((int)r##N);
 PARALLEL_BENCHMARKS(integer_div)
 #undef	BODY
@@ -196,7 +196,7 @@ PARALLEL_BENCHMARKS(integer_div)
 #define DECLARE(N)	register int r##N, s##N;
 #define INIT(N)		r##N = state->int_data[N] - N + 1 + iterations; \
 			s##N = state->int_data[N] - N + 1 + 62;
-#define PREAMBLE(N)	
+#define PREAMBLE(N)
 #define SAVE(N)		use_int((int)r##N);
 PARALLEL_BENCHMARKS(integer_mod)
 #undef	BODY
@@ -258,7 +258,7 @@ PARALLEL_BENCHMARKS(int64_mul)
 #define INIT(N)		r##N = state->int_data[N] - N + 37; \
 			r##N += r##N << 33; \
 			s##N = (r##N + 17) << 13;
-#define PREAMBLE(N)	
+#define PREAMBLE(N)
 #define SAVE(N)		use_int((int)r##N);
 PARALLEL_BENCHMARKS(int64_div)
 #undef	BODY
@@ -270,7 +270,7 @@ PARALLEL_BENCHMARKS(int64_div)
 #define BODY(N)		r##N = (s##N % r##N) ^ r##N;
 #define DECLARE(N)	register int64 r##N, s##N;
 #define INIT(N)		r##N = (int64)state->int_data[N]; s##N = 0;
-#define PREAMBLE(N)	s##N++;	
+#define PREAMBLE(N)	s##N++;
 #define SAVE(N)		use_int((int)r##N);
 PARALLEL_BENCHMARKS(int64_mod)
 #undef	BODY
@@ -335,7 +335,7 @@ PARALLEL_BENCHMARKS(double_add)
 #define DECLARE(N)	register double r##N, s##N;
 #define INIT(N)		r##N = 8.0f * state->double_data[N]; \
 			s##N = 0.125 * (double)state->M * state->double_data[N] / 1000.0;
-#define PREAMBLE(N)	
+#define PREAMBLE(N)
 #define SAVE(N)		use_int((int)r##N); use_int((int)s##N);
 PARALLEL_BENCHMARKS(double_mul)
 #undef	BODY
@@ -348,7 +348,7 @@ PARALLEL_BENCHMARKS(double_mul)
 #define DECLARE(N)	register double r##N, s##N;
 #define INIT(N)		r##N = 1.41421356 * state->double_data[N]; \
 			s##N = 3.14159265 * (double)(state->int_data[N] - N + 1);
-#define PREAMBLE(N)	
+#define PREAMBLE(N)
 #define SAVE(N)		use_int((int)r##N); use_int((int)s##N);
 PARALLEL_BENCHMARKS(double_div)
 #undef	BODY
@@ -415,82 +415,82 @@ main(int ac, char **av)
 		}
 	}
 
-	par = max_parallelism(integer_bit_benchmarks, 
+	par = max_parallelism(integer_bit_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "integer bit parallelism: %.2f\n", par);
 
-	par = max_parallelism(integer_add_benchmarks, 
+	par = max_parallelism(integer_add_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "integer add parallelism: %.2f\n", par);
 
-	par = max_parallelism(integer_mul_benchmarks, 
+	par = max_parallelism(integer_mul_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "integer mul parallelism: %.2f\n", par);
 
-	par = max_parallelism(integer_div_benchmarks, 
+	par = max_parallelism(integer_div_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "integer div parallelism: %.2f\n", par);
 
-	par = max_parallelism(integer_mod_benchmarks, 
+	par = max_parallelism(integer_mod_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "integer mod parallelism: %.2f\n", par);
 
-	par = max_parallelism(int64_bit_benchmarks, 
+	par = max_parallelism(int64_bit_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "int64 bit parallelism: %.2f\n", par);
 
-	par = max_parallelism(int64_add_benchmarks, 
+	par = max_parallelism(int64_add_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "int64 add parallelism: %.2f\n", par);
 
-	par = max_parallelism(int64_mul_benchmarks, 
+	par = max_parallelism(int64_mul_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "int64 mul parallelism: %.2f\n", par);
 
-	par = max_parallelism(int64_div_benchmarks, 
+	par = max_parallelism(int64_div_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "int64 div parallelism: %.2f\n", par);
 
-	par = max_parallelism(int64_mod_benchmarks, 
+	par = max_parallelism(int64_mod_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "int64 mod parallelism: %.2f\n", par);
 
-	par = max_parallelism(float_add_benchmarks, 
+	par = max_parallelism(float_add_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "float add parallelism: %.2f\n", par);
 
-	par = max_parallelism(float_mul_benchmarks, 
+	par = max_parallelism(float_mul_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "float mul parallelism: %.2f\n", par);
 
-	par = max_parallelism(float_div_benchmarks, 
+	par = max_parallelism(float_div_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "float div parallelism: %.2f\n", par);
 
-	par = max_parallelism(double_add_benchmarks, 
+	par = max_parallelism(double_add_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "double add parallelism: %.2f\n", par);
 
-	par = max_parallelism(double_mul_benchmarks, 
+	par = max_parallelism(double_mul_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "double mul parallelism: %.2f\n", par);
 
-	par = max_parallelism(double_div_benchmarks, 
+	par = max_parallelism(double_div_benchmarks,
 			      warmup, repetitions, &state);
 	if (par > 0.)
 		fprintf(stderr, "double div parallelism: %.2f\n", par);

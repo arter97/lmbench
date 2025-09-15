@@ -4,9 +4,9 @@
  * Usage: bw_pipe [-m <message size>] [-M <total bytes>] \
  *		[-P <parallelism>] [-W <warmup>] [-N <repetitions>]
  *
- * Copyright (c) 1994 Larry McVoy.  
+ * Copyright (c) 1994 Larry McVoy.
  * Copyright (c) 2002 Carl Staelin.
- * Distributed under the FSF GPL with additional restriction that results 
+ * Distributed under the FSF GPL with additional restriction that results
  * may published only if:
  * (1) the benchmark is unmodified, and
  * (2) the version in the sccsid below is included in the report.
@@ -59,7 +59,7 @@ initialize(iter_t iterations, void *cookie)
 		writer(pipes[1], state->buf, state->xfer);
 		return;
 		/*NOTREACHED*/
-	    
+
 	    case -1:
 		perror("fork");
 		state->initerr = 3;
@@ -176,7 +176,7 @@ main(int ac, char *av[])
 	} else if (state.bytes % state.xfer) {
 		state.bytes += state.bytes - state.bytes % state.xfer;
 	}
-	benchmp(initialize, reader, cleanup, MEDIUM, parallel, 
+	benchmp(initialize, reader, cleanup, MEDIUM, parallel,
 		warmup, repetitions, &state);
 
 	if (gettime() > 0) {

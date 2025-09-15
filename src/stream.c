@@ -66,7 +66,7 @@ main(int ac, char **av)
 		switch(c) {
 		case 'v':
 			version = atoi(optarg);
-			if (version != 1 && version != 2) 
+			if (version != 1 && version != 2)
 				lmbench_usage(ac, av, usage);
 			break;
 		case 'P':
@@ -92,13 +92,13 @@ main(int ac, char **av)
 	while (!(p = malloc(state.len)))
 		state.len /= 2;
 	free(p);
-		
+
 	/* convert from bytes to array length */
 	state.len /= 3 * sizeof(double);
 	datasize = sizeof(double) * state.len * parallel;
 
 	if (version == 1) {
-		benchmp(initialize, copy, cleanup, 
+		benchmp(initialize, copy, cleanup,
 			0, parallel, warmup, repetitions, &state);
 		if (gettime() > 0) {
 			if (parallel <= 1) save_minimum();
@@ -107,7 +107,7 @@ main(int ac, char **av)
 			mb(2 * datasize * get_n());
 		}
 
-		benchmp(initialize, scale, cleanup, 
+		benchmp(initialize, scale, cleanup,
 			0, parallel, warmup, repetitions, &state);
 		if (gettime() > 0) {
 			if (parallel <= 1) save_minimum();
@@ -116,7 +116,7 @@ main(int ac, char **av)
 			mb(2 * datasize * get_n());
 		}
 
-		benchmp(initialize, sum, cleanup, 
+		benchmp(initialize, sum, cleanup,
 			0, parallel, warmup, repetitions, &state);
 		if (gettime() > 0) {
 			if (parallel <= 1) save_minimum();
@@ -125,7 +125,7 @@ main(int ac, char **av)
 			mb(3 * datasize * get_n());
 		}
 
-		benchmp(initialize, triad, cleanup, 
+		benchmp(initialize, triad, cleanup,
 			0, parallel, warmup, repetitions, &state);
 		if (gettime() > 0) {
 			if (parallel <= 1) save_minimum();
@@ -134,7 +134,7 @@ main(int ac, char **av)
 			mb(3 * datasize * get_n());
 		}
 	} else {
-		benchmp(initialize, fill, cleanup, 
+		benchmp(initialize, fill, cleanup,
 			0, parallel, warmup, repetitions, &state);
 		if (gettime() > 0) {
 			if (parallel <= 1) save_minimum();
@@ -143,7 +143,7 @@ main(int ac, char **av)
 			mb(datasize * get_n());
 		}
 
-		benchmp(initialize, copy, cleanup, 
+		benchmp(initialize, copy, cleanup,
 			0, parallel, warmup, repetitions, &state);
 		if (gettime() > 0) {
 			if (parallel <= 1) save_minimum();
@@ -152,7 +152,7 @@ main(int ac, char **av)
 			mb(2 * datasize * get_n());
 		}
 
-		benchmp(initialize, daxpy, cleanup, 
+		benchmp(initialize, daxpy, cleanup,
 			0, parallel, warmup, repetitions, &state);
 		if (gettime() > 0) {
 			if (parallel <= 1) save_minimum();
@@ -161,7 +161,7 @@ main(int ac, char **av)
 			mb(3 * datasize * get_n());
 		}
 
-		benchmp(initialize, sum, cleanup, 
+		benchmp(initialize, sum, cleanup,
 			0, parallel, warmup, repetitions, &state);
 		if (gettime() > 0) {
 			if (parallel <= 1) save_minimum();
@@ -179,7 +179,7 @@ initialize(iter_t iterations, void* cookie)
 {
 	int i;
 	struct _state* state = (struct _state*)cookie;
-	
+
 	if (iterations) return;
 
 	state->a = (double*)malloc(sizeof(double) * state->len);

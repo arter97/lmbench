@@ -5,7 +5,7 @@
  *
  * Sizes less than 2m are not recommended.  Memory is read by summing it up
  * so the numbers include the cost of the adds.  If you use sizes large
- * enough, you can compare to bw_mem_rd and get the cost of TLB fills 
+ * enough, you can compare to bw_mem_rd and get the cost of TLB fills
  * (very roughly).
  *
  * Copyright (c) 1994 Larry McVoy.  Distributed under the FSF GPL with
@@ -86,7 +86,7 @@ main(int ac, char **av)
 	nbytes = state.nbytes = bytes(av[optind]);
 	strcpy(state.filename,av[optind+2]);
 	CHK(stat(state.filename, &sbuf));
-	if ((S_ISREG(sbuf.st_mode) && nbytes > sbuf.st_size) 
+	if ((S_ISREG(sbuf.st_mode) && nbytes > sbuf.st_size)
 	    || (nbytes < MINSZ)) {
 		fprintf(stderr,"<size> out of range!\n");
 		exit(1);

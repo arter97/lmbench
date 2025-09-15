@@ -4,7 +4,7 @@
  * @(#)lib_mem.c 1.15 staelin@hpliclu2.hpli.hpl.hp.com
  *
  * Copyright (c) 2000 Carl Staelin.
- * Copyright (c) 1994 Larry McVoy.  
+ * Copyright (c) 1994 Larry McVoy.
  * Distributed under the FSF GPL with
  * additional restriction that results may published only if
  * (1) the benchmark is unmodified, and
@@ -178,8 +178,8 @@ testing is %llu bytes, please choose smaller memory size for testing\n ", state-
 
 /*
  * Create a circular list of pointers using a simple striding
- * algorithm.  
- * 
+ * algorithm.
+ *
  * This access pattern corresponds to many array/matrix
  * algorithms.  It should be easily and correctly predicted
  * by any decent hardware prefetch algorithm.
@@ -228,7 +228,7 @@ thrash_initialize(iter_t iterations, void* cookie)
 	 * This stream corresponds more closely to linked list
 	 * memory access patterns.  For large data structures each
 	 * access will likely cause both a cache miss and a TLB miss.
-	 * 
+	 *
 	 * Access a different page each time.  This will eventually
 	 * cause a tlb miss each page.  It will also cause maximal
 	 * thrashing in the cache between the user data stream and
@@ -277,7 +277,7 @@ thrash_initialize(iter_t iterations, void* cookie)
  * is randomized to defeat cache prefetching algorithms.  In
  * addition, the order of page accesses is randomized.  Finally,
  * to reduce the impact of incorrect line-size estimates on
- * machines with direct-mapped caches, we randomize which 
+ * machines with direct-mapped caches, we randomize which
  * word in the cache line is used to hold the pointer.
  *
  * It initializes state->width pointers to elements evenly
@@ -330,7 +330,7 @@ mem_initialize(iter_t iterations, void* cookie)
 		}
 
 		if (i < npages - 1) {
-			for (k = 0; k < nwords; ++k) 
+			for (k = 0; k < nwords; ++k)
 				*(char**)(p + pages[i] + lines[j] + words[k]) =
 					p + pages[i+1] + lines[0] + words[k];
 		}
@@ -378,7 +378,7 @@ line_initialize(iter_t iterations, void* cookie)
 	p = state->base;
 
 	state->width = 1;
-	
+
 	if (state->addr == NULL || lines == NULL || pages == NULL)
 		return;
 
@@ -386,12 +386,12 @@ line_initialize(iter_t iterations, void* cookie)
 	for (i = 0; i < npages; ++i) {
 		/* sequence through the first word of each line */
 		for (j = 0; j < nlines - 1; ++j) {
-			*(char**)(p + pages[i] + lines[j]) = 
+			*(char**)(p + pages[i] + lines[j]) =
 				p + pages[i] + lines[j+1];
 		}
 
 		/* jump to the fist word of the first line on next page */
-		*(char**)(p + pages[i] + lines[j]) = 
+		*(char**)(p + pages[i] + lines[j]) =
 			p + pages[(i < npages-1) ? i+1 : 0] + lines[0];
 	}
 	state->p[0] = p + pages[0] + lines[0];
@@ -407,7 +407,7 @@ line_initialize(iter_t iterations, void* cookie)
  * tlb_initialize
  *
  * Build a pointer chain which accesses one word per page, for a total
- * of (line * pages) bytes of data loaded into cache.  
+ * of (line * pages) bytes of data loaded into cache.
  *
  * If the number of elements in the chain (== #pages) is larger than the
  * number of pages addressed by the TLB, then each access should cause
@@ -486,7 +486,7 @@ tlb_initialize(iter_t iterations, void* cookie)
 
 	/* now setup run through the pages */
 	for (i = 0; i < npages - 1; ++i) {
-		*(char**)(pages[i] + lines[i%nlines]) = 
+		*(char**)(pages[i] + lines[i%nlines]) =
 			pages[i+1] + lines[(i+1)%nlines];
 	}
 	*(char**)(pages[i] + lines[i%nlines]) = pages[0] + lines[0];
@@ -502,7 +502,7 @@ tlb_initialize(iter_t iterations, void* cookie)
 /*
  * words_initialize
  *
- * This is supposed to create the order in which the words in a 
+ * This is supposed to create the order in which the words in a
  * "cache line" are used.  Since we rarely know the cache line
  * size with any real reliability, we need to jump around so
  * as to maximize the number of potential cache misses, and to
@@ -608,7 +608,7 @@ line_test(size_t line, int warmup, int repetitions, struct mem_state* state)
 	for (i = 0; i < repetitions; ++i) {
 		BENCH1(HUNDRED(p = *(char**)p;),0);
 		/*
-		fprintf(stderr, "%d\t%d\t%d\n", line, (int)gettime(), (int)get_n()); 
+		fprintf(stderr, "%d\t%d\t%d\n", line, (int)gettime(), (int)get_n());
 		/**/
 		insertsort(gettime(), get_n(), r);
 	}
@@ -617,27 +617,27 @@ line_test(size_t line, int warmup, int repetitions, struct mem_state* state)
 	t = 10. * (double)gettime() / (double)get_n();
 	set_results(r_save);
 	free(r);
-	
+
 	/*
-	fprintf(stderr, "%d\t%.5f\t%d\n", line, t, state->len); 
+	fprintf(stderr, "%d\t%.5f\t%d\n", line, t, state->len);
 	/**/
 
 	/* fixup full path again */
 	if (nlines < state->nlines) {
 		p = state->base;
 		for (i = 0; i < npages - 1; ++i) {
-			*(char**)(p + 
-				  state->pages[i] + 
+			*(char**)(p +
+				  state->pages[i] +
 				  state->lines[nlines-1]) =
-				p + 
-				state->pages[i] + 
+				p +
+				state->pages[i] +
 				state->lines[nlines];
 		}
-		*(char**)(p + 
-			  state->pages[npages-1] + 
+		*(char**)(p +
+			  state->pages[npages-1] +
 			  state->lines[nlines-1]) =
-			p + 
-			state->pages[npages-1] + 
+			p +
+			state->pages[npages-1] +
 			state->lines[nlines];
 	}
 
@@ -676,9 +676,9 @@ par_mem(size_t len, int warmup, int repetitions, struct mem_state* state)
 				fprintf(stderr, "\tj=%d, line=%d, word=%d, page=%d, _line=%d, _word=%d\n", j, line, word, line / lines_per_page, line % lines_per_page, word % state->nwords);
 			}
 			/**/
-			state->p[j] = state->base + 
-				state->pages[line / lines_per_page] + 
-				state->lines[line % lines_per_page] + 
+			state->p[j] = state->base +
+				state->pages[line / lines_per_page] +
+				state->lines[line % lines_per_page] +
 				state->words[word % state->nwords];
 		}
 		mem_reset();

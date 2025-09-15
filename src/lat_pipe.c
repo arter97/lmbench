@@ -24,7 +24,7 @@ typedef struct _state {
 	int	p2[2];
 } state_t;
 
-int 
+int
 main(int ac, char **av)
 {
 	state_t state;
@@ -57,13 +57,13 @@ main(int ac, char **av)
 
 	state.pid = 0;
 
-	benchmp(initialize, doit, cleanup, SHORT, parallel, 
+	benchmp(initialize, doit, cleanup, SHORT, parallel,
 		warmup, repetitions, &state);
 	micro("Pipe latency", get_n());
 	return (0);
 }
 
-void 
+void
 initialize(iter_t iterations, void* cookie)
 {
 	char	c;
@@ -108,7 +108,7 @@ initialize(iter_t iterations, void* cookie)
 	}
 }
 
-void 
+void
 cleanup(iter_t iterations, void* cookie)
 {
 	state_t * state = (state_t *)cookie;
@@ -122,7 +122,7 @@ cleanup(iter_t iterations, void* cookie)
 	}
 }
 
-void 
+void
 doit(register iter_t iterations, void *cookie)
 {
 	state_t *state = (state_t *) cookie;
@@ -140,7 +140,7 @@ doit(register iter_t iterations, void *cookie)
 	}
 }
 
-void 
+void
 writer(register int w, register int r)
 {
 	char		c;
