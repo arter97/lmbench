@@ -147,7 +147,7 @@ loads(size_t len, size_t range, size_t stride,
 	/* We want to get to nanoseconds / load. */
 	save_minimum();
 	result = (1000. * (double)gettime()) / (double)(count * get_n());
-	fprintf(stderr, "%.5f %.3f\n", range / (1024. * 1024.), result);
+	fprintf(stderr, "%.5f\t%.3f\n", range / (1024. * 1024.), result);
 
 }
 

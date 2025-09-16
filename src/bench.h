@@ -342,18 +342,23 @@ extern char *client_rpc_xact_1();
 })
 #endif
 
-#define ALLOC_PATH "/dev/hugepages/test"
 // Not reentrant
 static void *alloc_file(size_t len)
 {
+	static const char *path = "/dev/hugepages/test";
 	static struct stat st;
 	static size_t offset = 0;
 	static int fd = -1;
+	static size_t truncated_len = 0;
 	size_t aligned_len;
 	void *ret = NULL;
 
 	if (fd == -1) {
-		fd = open(ALLOC_PATH, O_RDWR | O_CREAT, 0666);
+		const char *alloc_path = getenv("ALLOC_PATH");
+		if (alloc_path)
+			path = alloc_path;
+
+		fd = open(path, O_RDWR | O_CREAT, 0666);
 		if (fd == -1) {
 			perror("open");
 			return NULL;
@@ -364,22 +369,24 @@ static void *alloc_file(size_t len)
 		}
 	}
 
-	if (S_ISREG(st.st_mode)) {
-		size_t align_to_2mb = (len + 2 * 1024 * 1024 - 1) & ~(2 * 1024 * 1024 - 1);
-		printf("Truncating %s to %ld\n", ALLOC_PATH, align_to_2mb);
+	size_t align_to_2mb = (len + 2 * 1024 * 1024 - 1) & ~(2 * 1024 * 1024 - 1);
+	if (S_ISREG(st.st_mode) && truncated_len < align_to_2mb) {
+		// printf("Truncating %s to %ld\n", path, align_to_2mb);
 		if (ftruncate(fd, align_to_2mb) == -1) {
 			perror("ftruncate");
 			goto out;
 		}
+		truncated_len = align_to_2mb;
 	}
 
 	// Align len to 4096
 	aligned_len = (len + 4095) & ~4095;
 
-	printf("mmapping %ld bytes at %ld (original len: %ld)\n", aligned_len, offset, len);
+	// printf("mmapping %ld bytes at %ld (original len: %ld)\n", aligned_len, offset, len);
 
-	ret = mmap(NULL, offset + aligned_len, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
+	ret = mmap(NULL, /*offset +*/ align_to_2mb, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
 	if (ret == MAP_FAILED) {
+		printf("mmapping %ld bytes at %ld (original len: %ld)\n", aligned_len, offset, len);
 		perror("mmap");
 		goto out;
 	}
